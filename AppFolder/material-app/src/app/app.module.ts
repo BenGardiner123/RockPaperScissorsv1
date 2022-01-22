@@ -11,6 +11,7 @@ import { RoundSelectionComponent } from './components/game/round-selection/round
 import { DisplayResultComponent } from './components/game/display-result/display-result.component';
 import { UserChoiceComponent } from './components/game/user-choice/user-choice.component';
 import { LeaderboardComponent } from './components/leaderboard/leaderboard/leaderboard.component';
+import { GameContainerComponent } from './components/game/game-container/game-container.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { LeaderboardComponent } from './components/leaderboard/leaderboard/leade
     RoundSelectionComponent,
     DisplayResultComponent,
     UserChoiceComponent,
-    LeaderboardComponent
+    LeaderboardComponent,
+    GameContainerComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,76 @@
+@import "../styles.scss";
+
+.main {
+    // border: 1px solid #ccc;
+    max-width: 120rem;
+    margin: 8rem auto;
+
+}
+
+
+.outletContainer{
+    background-color: grey;
+    border: 1px solid black;
+    height: 100px;
+    border-radius: 10px;
+    box-shadow: 8px 8px #33334d;
+}
+
+
+#title h1{
+    font-family: Arial, Helvetica, sans-serif;
+    margin-bottom: 0px;
+    padding-left: 1rem; 
+    width: 100rem;
+}
+
+#usernameBox {
+   height: 50px;
+   border: 1px black solid;
+}
+
+input{
+    height: 20px;
+}
+
+span{
+    font-size: x-large;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+// .lead-container{
+//     width: inherit;
+//     display: flex;
+//     flex-direction: column;
+//     padding-left: 75%;
+//     height: 100px;
+// }
+
+#leaderBoardBox {
+    display: flex;
+    margin-left: auto;
+    padding-top: 0.8rem;
+    font-size: 1.5rem;
+    height: 100px;
+    flex-direction: row;
+    /* align-content: flex-end; */
+    justify-content: flex-end;
+}
+
+
+
+a{
+    color:black;
+    text-decoration: none;
+    justify-content: flex-end;
+}
+
+#userLogin-button{
+    position: relative;
+    width: 92px;
+    height: 29px;
+    background-color: dodgerblue;
+    border-radius: 12px;
+    color: white;
+    margin-left: 309px;
+}
