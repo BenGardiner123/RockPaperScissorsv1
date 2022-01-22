@@ -1,1 +1,27 @@
-<p>round-selection works!</p>
+<div class="container">
+    <div class="roundChoiceContainer">
+        
+        <!-- todo add on mouse hover change color of the number -->
+        <div [ngClass]="!oneSelected ? 'choice one' : 'choice one selected'"(click)="chooseThisRound('1')" (click)="disableButton()">
+            <h1>1</h1>
+            <h4>Rounds</h4>
+        </div>
+            
+        <div [ngClass]="!threeSelected ? 'choice three' : 'choice three selected'"(click)="chooseThisRound('3')" (click)="disableButton()">
+            <h1>3</h1>
+            <h4>Rounds</h4>
+        </div>
+           
+        <div [ngClass]="!fiveSelected ? 'choice five' : 'choice five selected'"(click)="chooseThisRound('5')" (click)="disableButton()"> 
+            <h1>5</h1>
+            <h4>Rounds</h4>
+        </div>
+
+    </div>
+
+    <div>
+        
+        <button class="shootButton" (click)="makeRoundSelection()" [disabled]="!isSelected" >Start!</button>
+    </div>
+
+</div>
