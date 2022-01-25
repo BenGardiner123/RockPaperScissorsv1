@@ -16,7 +16,7 @@ export class RoundSelectionComponent implements OnInit {
   public fiveSelected: boolean;
  
 
-  constructor(private router:Router, private gameService: GameService) {
+  constructor(public router: Router, private gameService: GameService) {
     this.oneSelected = false;
     this.threeSelected = false;
     this.fiveSelected = false;

@@ -1,57 +1,67 @@
 .container{
-   
+   display: flex;
 }
 
 .roundChoiceContainer{
-   
+   flex-direction: column;
 }
 
-.choice{
-   
+.roundSelectors{
+    display: flex;
+    flex-direction: row;
+    
 }
-
 .choice.one{
-   
+    color: black;
+    cursor:grab;
 }
 
 .choice.one:hover{
-  
+    background-color: #888f99;
+    border: white 2px solid;
+    border-radius: 2px;
+    text-shadow: 1px 2px rgb(92, 89, 89);
 }
 
 .choice.one.selected{
-    
+    background-color: #888f99;
+    border: white 2px solid;
+    border-radius: 2px;
 }
 
 .choice.three{
-    
+    color: black;
+    cursor:grab;
 }
 
 .choice.three:hover{
-    
+    background-color: #888f99;
+    border: white 2px solid;
+    border-radius: 2px;
+    text-shadow: 1px 2px rgb(92, 89, 89);
 }
 
 .choice.three.selected{
-    
+    background-color: #888f99;
+    border: white 2px solid;
+    border-radius: 2px;
     
 }
 
 .choice.five{
-    
+    color: black;
+    cursor:grab;
 }
 
 .choice.five:hover{
-   
+    background-color: #888f99;
+    border: white 2px solid;
+    border-radius: 2px;
+    text-shadow: 1px 2px rgb(92, 89, 89);
 }
 
 .choice.five.selected{
-  
-}
-
-button{
- 
-    
-}
-
-.shootButton{
-    
+    background-color: #888f99;
+    border: white 2px solid;
+    border-radius: 2px;
 }

@@ -20,6 +20,7 @@ import {MatChipsModule} from '@angular/material/chips'
 import { ReactiveFormsModule } from '@angular/forms';
 import {MatCardModule} from '@angular/material/card';
 import {MatProgressBar} from '@angular/material/progress-bar';
+import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [],
@@ -41,7 +42,8 @@ import {MatProgressBar} from '@angular/material/progress-bar';
     MatPaginatorModule, 
     MatChipsModule,
     ReactiveFormsModule,
-    MatCardModule
+    MatCardModule,
+    MatTooltipModule
   ],
   imports: [
     CommonModule

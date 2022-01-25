@@ -12,6 +12,7 @@ import { DisplayResultComponent } from './components/game/display-result/display
 import { UserChoiceComponent } from './components/game/user-choice/user-choice.component';
 import { LeaderboardComponent } from './components/leaderboard/leaderboard/leaderboard.component';
 import { GameContainerComponent } from './components/game/game-container/game-container.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { GameContainerComponent } from './components/game/game-container/game-co
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MaterialModule
+    MaterialModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

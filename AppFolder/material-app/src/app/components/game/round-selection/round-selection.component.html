@@ -1,27 +1,34 @@
 <div class="container">
     <div class="roundChoiceContainer">
-        
-        <!-- todo add on mouse hover change color of the number -->
-        <div [ngClass]="!oneSelected ? 'choice one' : 'choice one selected'"(click)="chooseThisRound('1')" (click)="disableButton()">
-            <h1>1</h1>
-            <h4>Rounds</h4>
-        </div>
+        <div class="roundSelectors">
+              <!-- todo add on mouse hover change color of the number -->
+            <div [ngClass]="!oneSelected ? 'choice one' : 'choice one selected'"(click)="chooseThisRound('1')" (click)="disableButton()">
+                <h1>1</h1>
+                <h4>Rounds</h4>
+            </div>
+                
+            <div [ngClass]="!threeSelected ? 'choice three' : 'choice three selected'"(click)="chooseThisRound('3')" (click)="disableButton()">
+                <h1>3</h1>
+                <h4>Rounds</h4>
+            </div>
             
-        <div [ngClass]="!threeSelected ? 'choice three' : 'choice three selected'"(click)="chooseThisRound('3')" (click)="disableButton()">
-            <h1>3</h1>
-            <h4>Rounds</h4>
+            <div [ngClass]="!fiveSelected ? 'choice five' : 'choice five selected'"(click)="chooseThisRound('5')" (click)="disableButton()"> 
+                <h1>5</h1>
+                <h4>Rounds</h4>
+            </div>
         </div>
-           
-        <div [ngClass]="!fiveSelected ? 'choice five' : 'choice five selected'"(click)="chooseThisRound('5')" (click)="disableButton()"> 
-            <h1>5</h1>
-            <h4>Rounds</h4>
+        <!-- TODO get div to take up full container with flex 1 i think it is from jonas schmettman, and then work on connecting up the services-->
+
+        <div class="buttonContainer">
+            <button mat-raised-button color="primary" 
+                    class="shootButton" 
+                    (click)="makeRoundSelection()" 
+                    [disabled]="!isSelected" 
+                    matTooltip="Select a number of rounds to begin the game"
+                    matTooltipHideDelay="1"
+                    aria-label="Button that displays a tooltip that hides when scrolled out of the container"
+                    >Start!</button>
         </div>
-
-    </div>
-
-    <div>
-        
-        <button class="shootButton" (click)="makeRoundSelection()" [disabled]="!isSelected" >Start!</button>
     </div>
 
 </div>
