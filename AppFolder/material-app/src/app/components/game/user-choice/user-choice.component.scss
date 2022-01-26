@@ -1,0 +1,63 @@
+.container{
+    display: flex;
+}
+
+.choiceContainer{
+    flex-direction: column;
+}
+
+.choiceSelectors{
+    display: flex;
+    flex-direction: row;
+}
+
+.roundCounter{
+    //this will need to be the entire length of the container but positioned at the start
+    flex: 1;
+}
+
+
+.choice.rock{
+    /* border: 1px black solid; */
+    background: url(https://i.ibb.co/VqKy2hT/rock.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+}
+
+
+.choice.rock.selected{
+    /* border: 1px black solid; */
+    background: url(https://i.ibb.co/K7PBjFC/rock-selected.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.choice.paper{
+    /* border: 1px black solid; */
+    background: url(https://i.ibb.co/zXMN3xJ/paper.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.choice.paper.selected{
+    /* border: 1px black solid; */
+    background: url(https://i.ibb.co/k8YJ9tx/paper-selected.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
+.choice.scissors{
+    /* border: 1px black solid; */
+    background: url(https://i.ibb.co/BPxfRJD/scissors1.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.choice.scissors.selected{
+    /* border: 1px black solid; */
+    background: url(https://i.ibb.co/bQnp2CV/sciss-selected.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}

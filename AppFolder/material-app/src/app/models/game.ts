@@ -1,12 +1,12 @@
 //create game model for the behavior subject
 export interface Game {
     username: string;
-    startDateTime: Date;
+    startDateTime: Date | null;
     roundCounter: number;
     roundLimit: number;
-    aiSelection: string;
-    selection: string;
-    outcome: string;
+    aiSelection: string | null;
+    selection: string | null;
+    outcome: string | null;
 }
 
 

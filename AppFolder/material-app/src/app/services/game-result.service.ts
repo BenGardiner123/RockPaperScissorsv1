@@ -10,7 +10,9 @@ import { GameService } from './game.service';
 })
 export class GameResultService {
 
-  constructor(private router: Router, private httpClient: HttpClient, private gameService: GameService) { }
+  constructor(private router: Router, private httpClient: HttpClient, private gameService: GameService) { 
+    
+  }
 
   private apiURL = environment.apiURL + "/GameResult";
   

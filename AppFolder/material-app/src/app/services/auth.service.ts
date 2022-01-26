@@ -5,11 +5,12 @@ import { Injectable } from '@angular/core';
 })
 export class AuthService {
 
+  private _username: string = "test";
+
   constructor() { }
 
   getUsername(){
-    return "test";
-
+    return this._username;
   }
 
 }

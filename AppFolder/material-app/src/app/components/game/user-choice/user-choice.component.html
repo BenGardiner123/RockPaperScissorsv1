@@ -4,18 +4,24 @@
         
         <div class="roundCounter"> Round {{roundCounter}} / {{roundLimit}} </div>
         
-        <div [ngClass]="!rockSelected ? 'choice rock' : 'choice rock selected'"(click)="chooseThis('Rock')">
+        <div class="choiceSelectors">
+            <div [ngClass]="!rockSelected ? 'choice rock' : 'choice rock selected'"(click)="chooseThis('Rock')">
+            </div>
+    
+            <div [ngClass]="!paperSelected ? 'choice paper' : 'choice paper selected'"(click)="chooseThis('Paper')">
+            </div>
+    
+            <div [ngClass]="!scissorsSelected ? 'choice scissors' : 'choice scissors selected'"(click)="chooseThis('Scissors')">
+            </div>
         </div>
+      
 
-        <div [ngClass]="!paperSelected ? 'choice paper' : 'choice paper selected'"(click)="chooseThis('Paper')">
-        </div>
 
-        <div [ngClass]="!scissorsSelected ? 'choice scissors' : 'choice scissors selected'"(click)="chooseThis('Scissors')">
+        <div>
+            <button class="shootButton" (click)="makeSelection()">Shoot!</button>
         </div>
 
     </div>
-    <div>
-        <button class="shootButton" (click)="makeSelection()">Shoot!</button>
-    </div>
+    
 
 </div>
