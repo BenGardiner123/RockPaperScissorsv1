@@ -1,7 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { environment } from 'src/environments/environment';
+import { Game } from '../models/game';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,17 +14,28 @@ export class GameService {
    //reuseable environemnt varible
    private apiURL = environment.apiURL + "Game";
 
+   //create a behaviour subject to track the game state
+
+   private gameDataSource = new BehaviorSubject<Game>(null);
+
+   gameData$ = this.gameDataSource.asObservable();
+
+  //  -------------------------------------------
+
    public isAuthenticated: boolean = false;
  
    private _StartDateTime: Date;
    private _roundCounter: number | null;
    private _roundLimit: number | null;
-   public  username: string | null;
+   private  _username: string | null;
    private _AiSelection: string | null;
    private _selection: string | null;
    private _outcome: string | null;
 
- 
+  
+   get username(){
+     return this.;
+   }
   
    get startDateTime(){
      return this._StartDateTime;
@@ -48,15 +62,20 @@ export class GameService {
    }
  
 
-  constructor(private router: Router, private httpClient: HttpClient,) { 
+  constructor(private router: Router, private httpClient: HttpClient, private authService: AuthService) { }
 
+
+  getUsername(){
+   this.gameDataSource.value.username = this.authService.getUsername();
   }
 
   commitRoundSelection(roundNum: '1' | '3' | '5'){
     var specificNewGameTime = new Date();
-    this._StartDateTime = specificNewGameTime;
-    this._roundLimit = parseInt(roundNum);
-    this._roundCounter = 0;
+    //set the username
+    this.getUsername();
+    this.gameDataSource.value.startDateTime = specificNewGameTime;
+    this.gameDataSource.value.roundLimit = parseInt(roundNum);
+    this.gameDataSource.value.roundCounter = 0;
 
   }
 
@@ -173,7 +192,5 @@ export class GameService {
     }
   }
 
-  public getUserName(){
 
-  }
 }
