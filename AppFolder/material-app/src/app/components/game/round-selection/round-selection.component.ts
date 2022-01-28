@@ -48,8 +48,7 @@ export class RoundSelectionComponent implements OnInit {
   }
 
   makeRoundSelection(){
-    
-   
+  
     if (this.oneSelected){
       this.gameService.commitRoundSelection('1');
     }
@@ -60,7 +59,7 @@ export class RoundSelectionComponent implements OnInit {
       this.gameService.commitRoundSelection('5');
     }
     
-    this.router.navigateByUrl("/Selection");
+    this.router.navigateByUrl("/selection");
 
 }
 

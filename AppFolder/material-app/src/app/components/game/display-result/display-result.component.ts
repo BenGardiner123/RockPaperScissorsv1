@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { GameResultService } from 'src/app/services/game-result.service';
 
 @Component({
   selector: 'app-display-result',
@@ -7,9 +9,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DisplayResultComponent implements OnInit {
 
-  constructor() { }
+  public gameResult: string;
+
+  constructor(private gameResultService: GameResultService, private router: Router) { }
 
   ngOnInit(): void {
+    this.showGameResult();
+    this.gameResultService.getWinner();
+    this.gameResultService.calulateWinner();
+    this.gameResult = this.gameResultService.gameOutcome;
   }
+  showGameResult(){
+    this.gameResultService.getGameResult();
+  }
+
+
+
 
 }

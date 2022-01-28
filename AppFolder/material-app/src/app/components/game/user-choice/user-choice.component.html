@@ -4,7 +4,7 @@
         
         <div class="roundCounter"> Round {{roundCounter}} / {{roundLimit}} </div>
         
-        <div class="choiceSelectors">
+        <div class="choice">
             <div [ngClass]="!rockSelected ? 'choice rock' : 'choice rock selected'"(click)="chooseThis('Rock')">
             </div>
     
@@ -18,7 +18,15 @@
 
 
         <div>
-            <button class="shootButton" (click)="makeSelection()">Shoot!</button>
+            
+            <button mat-raised-button color="primary" 
+            class="shootButton" 
+            (click)="makeSelection()" 
+            [disabled]="!isSelected" 
+            matTooltip="Let's send it downrange"
+            matTooltipHideDelay="1"
+            aria-label="Button that displays a tooltip that hides when scrolled out of the container"
+            >Shoot!</button>
         </div>
 
     </div>

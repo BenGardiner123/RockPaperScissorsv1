@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class AuthService {
 
-  private _username: string = "test";
+  private _username: string = "Benson";
 
   constructor() { }
 
@@ -13,4 +13,13 @@ export class AuthService {
     return this._username;
   }
 
+
+  logout(){
+    this._username = "";
+    //clear the session and local Storage
+    sessionStorage.clear();
+    localStorage.clear();
+    
+
+  }
 }

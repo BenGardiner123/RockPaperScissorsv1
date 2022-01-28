@@ -1,14 +1,21 @@
 .container{
     display: flex;
+    margin: 2rem auto;
 }
 
 .choiceContainer{
+    display: flex;
     flex-direction: column;
 }
 
-.choiceSelectors{
+.choice{
     display: flex;
-    flex-direction: row;
+    flex: 1;
+    height: 20rem;
+    width: 60rem;
+    //margin-left: 20px;
+    //margin-right: 20px;
+    //display: inline-block;
 }
 
 .roundCounter{
@@ -19,7 +26,7 @@
 
 .choice.rock{
     /* border: 1px black solid; */
-    background: url(https://i.ibb.co/VqKy2hT/rock.png);
+    background: url('../../../../assets/rock.png');
     background-repeat: no-repeat;
     background-size: cover;
     
