@@ -67,33 +67,16 @@ export class GameService {
 
   }
 
-  startGame(){
+  startGame(): Observable<HttpOutcome> { 
     console.log("start game");
-    return this.httpClient.post<HttpOutcome>(this.apiURL + "/StartGame",
+    return this.httpClient.post<HttpOutcome>(`${this.apiURL}/StartGame`, 
     {
       // this sends all the information neeed to start the game
       username: this.username, 
       roundLimit: this.roundLimit, 
       DateTimeStarted: this.startDateTime, 
       currentRound: this.roundCounter
-    }).subscribe((response) => {
-      if(response.status == 200){
-        console.log("game started");  
-      }
-      if(response.status == 401 || response.status == 403){
-        console.log("game not started");
-      }
-    }, (error) => {
-      if(error.status == 401){
-      alert("Sorry - you are not authorized to do that")
-      }
-      if(error.status == 405){
-      alert("The method exists but not supported by the target - potentially incorrct formating")
-      }
-      if(error.status == 500){
-      alert("Server Error")
-      }
-    });
+    });      
   }
 
 

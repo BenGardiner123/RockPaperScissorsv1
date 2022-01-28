@@ -53,6 +53,7 @@ export class UserChoiceComponent implements OnInit {
   }
 
   makeSelection() {
+    console.log("make selection");
     if (this.gameService.gameData$ == null) {
       alert("Please enter a username before making a selection");
       return;

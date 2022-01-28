@@ -23,6 +23,9 @@ export class RoundSelectionComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    //the game should start when the user selects a round
+    this.gameService.startGame();
+
   }
 
 
@@ -44,6 +47,7 @@ export class RoundSelectionComponent implements OnInit {
       this.threeSelected = false;
       this.fiveSelected = !this.fiveSelected;
     }
+    
 
   }
 
@@ -51,6 +55,7 @@ export class RoundSelectionComponent implements OnInit {
   
     if (this.oneSelected){
       this.gameService.commitRoundSelection('1');
+      
     }
     else if(this.threeSelected){
       this.gameService.commitRoundSelection('3');
@@ -58,7 +63,9 @@ export class RoundSelectionComponent implements OnInit {
     else if(this.fiveSelected){
       this.gameService.commitRoundSelection('5');
     }
-    
+    //create a new Game object and populate it from the behavior subject
+
+    this.gameService.startGame();
     this.router.navigateByUrl("/selection");
 
 }
