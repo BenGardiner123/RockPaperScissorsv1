@@ -9,7 +9,7 @@ import { GameResultService } from './services/game-result.service';
 
 const routes: Routes = [
   {path: "selection", component: UserChoiceComponent},
-  {path: "result", component: DisplayResultComponent},
+  {path: "results", component: DisplayResultComponent},
   // {path: "Leaderboard", component: RpsLeaderboardComponent},
   {path: "rounds", component: RoundSelectionComponent},
   {path: "signup", component: SignupComponent},

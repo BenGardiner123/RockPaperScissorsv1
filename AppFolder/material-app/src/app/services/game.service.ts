@@ -14,6 +14,10 @@ import { AuthService } from './auth.service';
 })
 export class GameService {
 
+  //create a new httpresponse object to store the data;
+  public data: HttpOutcome;
+
+
   //reuseable environemnt varible
   private apiURL = environment.apiURL + "Game";
 
@@ -40,7 +44,7 @@ export class GameService {
   //get starttime from the gameDataSource
 
   get startDateTime() {
-    return this.gameData$;
+    return this.gameDataSource.value.startDateTime;
   }
 
   get roundLimit() {
@@ -67,36 +71,46 @@ export class GameService {
 
   }
 
-  startGame(): Observable<HttpOutcome> { 
+  startGame(roundLimit: number){ 
+    //create a new date object to store the current time
+    let NewGameTime = new Date();
     console.log("start game");
-    return this.httpClient.post<HttpOutcome>(`${this.apiURL}/StartGame`, 
-    {
-      // this sends all the information neeed to start the game
-      username: this.username, 
-      roundLimit: this.roundLimit, 
-      DateTimeStarted: this.startDateTime, 
-      currentRound: this.roundCounter
-    });      
+    //create a new game object to store the data
+    
+    return this.httpClient.post(this.apiURL + "/StartGame", {
+      username: this.username,
+      roundLimit: roundLimit,
+      DateTimeStarted: NewGameTime,
+      roundCounter: this.roundCounter
+    }).subscribe({
+      next: (response) => {
+        console.log("this is the response", response);
+      },
+      error: (error) => {
+        error.status;
+        console.log("this is the error", error);
+      }
+   });
+
   }
 
 
   commitSelection(option: "Rock" | "Paper" | "Scissors") {
         this.gameDataSource.value.selection = option;
-        this.gameDataSource.value.roundCounter++;
-        let request = this.httpClient.post<Game>(this.apiURL + "/postSelection",
-        {
-          username: this.username, 
-          playerChoice: option,
-          roundLimit: this.roundLimit, 
-          roundCounter: this.roundCounter,
-          DateTimeStarted: this.startDateTime
-        });
-        //console log the request object
-
-        console.log("comit selection request", request);
-        request.subscribe((response) => {
+        // this.gameDataSource.value.roundCounter++;
+        let outgoingGame = { 
+          username: this.username,  
+          playerChoice: option, 
+          roundLimit: this.roundLimit,
+          DateTimeStarted: this.startDateTime, 
+          roundCounter: this.roundCounter, 
+          
+        }; 
+        console.log("outgoing object", outgoingGame);
+        let request = this.httpClient.post<Game>(this.apiURL + "/postSelection", outgoingGame).subscribe((response) => {
+  
         //this stores the selection being pushed over from the compnent into the variable above
-        console.log(response);
+        console.log("this is whats coming back", response);
         this.gameDataSource.value.aiSelection = response.aiSelection;
         this.gameDataSource.value.outcome = response.outcome;
 

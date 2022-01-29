@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class AuthService {
 
-  private _username: string = "Benson";
+  private _username: string = "Ben";
 
   constructor() { }
 

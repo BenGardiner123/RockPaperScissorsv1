@@ -14,7 +14,7 @@ export class GameResultService {
     
   }
 
-  private apiURL = environment.apiURL + "/GameResult";
+  private apiURL = environment.apiURL + "GameResult";
   
 
   // game outcome will tally the results from all the rounds and decide if you won

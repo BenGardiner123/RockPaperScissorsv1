@@ -23,8 +23,7 @@ export class RoundSelectionComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    //the game should start when the user selects a round
-    this.gameService.startGame();
+    
 
   }
 
@@ -52,20 +51,30 @@ export class RoundSelectionComponent implements OnInit {
   }
 
   makeRoundSelection(){
-  
+    let setRoundLimit: number;
+    
     if (this.oneSelected){
       this.gameService.commitRoundSelection('1');
+      setRoundLimit = 1;
+      this.gameService.startGame(setRoundLimit);
+      this.router.navigate(['/selection']);
       
     }
     else if(this.threeSelected){
       this.gameService.commitRoundSelection('3');
+      setRoundLimit = 3;
+      this.gameService.startGame(setRoundLimit);
+      this.router.navigate(['/selection']);
+
     }
     else if(this.fiveSelected){
       this.gameService.commitRoundSelection('5');
+      setRoundLimit = 5;
+      this.gameService.startGame(setRoundLimit);
+      this.router.navigate(['/selection']);
+      
     }
-    //create a new Game object and populate it from the behavior subject
-
-    this.gameService.startGame();
+  
     this.router.navigateByUrl("/selection");
 
 }
