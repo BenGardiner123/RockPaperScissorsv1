@@ -23,7 +23,7 @@ export class GameService {
 
   //create a behaviour subject to track the game state
 
-  private gameDataSource = new BehaviorSubject<Game>({"username": null, "startDateTime": null, "roundCounter": 1, "roundLimit": 0, "aiSelection": "", "selection": "", "outcome": ""});
+  private gameDataSource = new BehaviorSubject<Game>({ "username": null, "startDateTime": null, "roundCounter": 1, "roundLimit": 0, "aiSelection": "", "selection": "", "outcome": "" });
 
   gameData$ = this.gameDataSource.asObservable();
 
@@ -31,7 +31,7 @@ export class GameService {
 
   public isAuthenticated: boolean = false;
 
-  constructor(private router: Router, private httpClient: HttpClient, private authService: AuthService) { 
+  constructor(private router: Router, private httpClient: HttpClient, private authService: AuthService) {
     this.loadUsername();
     console.log("game service constructor", this.gameDataSource.value);
   }
@@ -71,12 +71,12 @@ export class GameService {
 
   }
 
-  startGame(roundLimit: number){ 
+  startGame(roundLimit: number) {
     //create a new date object to store the current time
-    let NewGameTime = new Date();
+    let NewGameTime = new Date().toISOString();
     console.log("start game");
     //create a new game object to store the data
-    
+
     return this.httpClient.post(this.apiURL + "/StartGame", {
       username: this.username,
       roundLimit: roundLimit,
@@ -90,59 +90,51 @@ export class GameService {
         error.status;
         console.log("this is the error", error);
       }
-   });
+    });
 
   }
 
 
   commitSelection(option: "Rock" | "Paper" | "Scissors") {
-        this.gameDataSource.value.selection = option;
-        // this.gameDataSource.value.roundCounter++;
-        let outgoingGame = { 
-          username: this.username,  
-          playerChoice: option, 
-          roundLimit: this.roundLimit,
-          DateTimeStarted: this.startDateTime, 
-          roundCounter: this.roundCounter, 
-          
-        }; 
-        console.log("outgoing object", outgoingGame);
-        let request = this.httpClient.post<Game>(this.apiURL + "/postSelection", outgoingGame).subscribe((response) => {
-  
-        //this stores the selection being pushed over from the compnent into the variable above
-        console.log("this is whats coming back", response);
-        this.gameDataSource.value.aiSelection = response.aiSelection;
-        this.gameDataSource.value.outcome = response.outcome;
+    this.gameDataSource.value.selection = option;
+    // this.gameDataSource.value.roundCounter++;
+    let outgoingGame = {
+      username: this.username,
+      playerChoice: option,
+      roundLimit: this.roundLimit,
+      DateTimeStarted: this.startDateTime,
+      roundCounter: this.roundCounter,
 
-        }, (error) => {
-              if(error.status == 401){
-                alert("Sorry - you are not authorized to do that")
-              }
-              if(error.status == 405){
-                alert("The method exists but not supported by the target - potentially incorrct formating")
-              }
-              if(error.status == 404){
-                alert("The origin server did not find a current representation for the target resource or is not willing to disclose that one exists.")
-              }
-              if(error.status == 500){
-                alert("It is likely that some undetermined error occured.. internally. Have you tried switching it off and on again? ")
-              }
+    };
+    console.log("outgoing object", outgoingGame);
+    let request = this.httpClient.post<Game>(this.apiURL + "/postSelection", outgoingGame);
+    request.subscribe((response) => {
+      //this stores the selection being pushed over from the compnent into the variable above
+      console.log("this is whats coming back", response);
+      this.gameDataSource.value.aiSelection = response.aiSelection;
+      this.gameDataSource.value.outcome = response.outcome;
+      this.gameDataSource.value.roundCounter++;
+     
 
-      });
-
-      //TODO neeed to do a roundcounter check here to see if the round is over
-      //if it is over then need to navigate to the results page
-      //if it is not over then need to navigate to the selection page
-
-      if (this.roundCheck()) {
-        this.router.navigateByUrl("/selection");
-        //incremnt tghe round counter and take them back to the selction page, if the counter reaches the end then we go to the results page
-        this.gameDataSource.value.roundCounter++;
+    }, (error) => {
+      if (error.status == 401) {
+        alert("Sorry - you are not authorized to do that")
       }
-      else{
-       /// TODO need to create a results page for this
-        this.router.navigateByUrl("/results");
+      if (error.status == 405) {
+        alert("The method exists but not supported by the target - potentially incorrct formating")
       }
+      if (error.status == 404) {
+        alert("The origin server did not find a current representation for the target resource or is not willing to disclose that one exists.")
+      }
+      if (error.status == 500) {
+        alert("It is likely that some undetermined error occured.. internally. Have you tried switching it off and on again? ")
+      }
+
+    });
+
+    //TODO neeed to do a roundcounter check here to see if the round is over
+    //if it is over then need to navigate to the results page
+    //if it is not over then need to navigate to the selection page
 
 
   }

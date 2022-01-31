@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { GameResultService } from 'src/app/services/game-result.service';
 import { GameService } from 'src/app/services/game.service';
 
@@ -16,7 +17,7 @@ export class UserChoiceComponent implements OnInit {
   public roundCounter: number;
   public roundLimit: number;
 
-  constructor(private gameService: GameService, private gameResultService: GameResultService) { }
+  constructor(private gameService: GameService, private gameResultService: GameResultService, private router: Router) { }
 
   ngOnInit() {
     ///this is going to have to come from
@@ -60,28 +61,43 @@ export class UserChoiceComponent implements OnInit {
     }
     else {
       if (this.rockSelected) {
-        this.gameService.commitSelection("Rock");
-        if (this.gameService.roundCounter == this.gameService.roundLimit) {
-          this.gameResultService.getGameResult();
+        this.gameService.commitSelection("Rock")
+        if (this.gameService.roundCheck()) {
+          this.ngOnInit();
         }
-        // this.roundCounter++;
+        else {
+          /// TODO need to create a results page for this
+          this.router.navigateByUrl("/results");
+        }  
       }
       else if (this.paperSelected) {
         this.gameService.commitSelection("Paper");
-        if (this.gameService.roundCounter == this.gameService.roundLimit) {
-          this.gameResultService.getGameResult();
+        if (this.gameService.roundCheck()) {
+          this.ngOnInit();
         }
-        // this.roundCounter++;
+        else {     
+          this.router.navigateByUrl("/results");
+        }
       }
       else if (this.scissorsSelected) {
         this.gameService.commitSelection("Scissors");
-        if (this.gameService.roundCounter == this.gameService.roundLimit) {
-          this.gameResultService.getGameResult();
+        if (this.gameService.roundCheck()) {
+          this.ngOnInit();
         }
-        // this.roundCounter++;
+        else {
+          this.router.navigateByUrl("/results");
+        }
+
       }
 
     }
+  }
+
+  clearSelection(){
+    this.rockSelected = false;
+    this.paperSelected = false;
+    this.scissorsSelected = false;
+    this.isSelected = false;
   }
 
   //disable the button until the user selects a round
