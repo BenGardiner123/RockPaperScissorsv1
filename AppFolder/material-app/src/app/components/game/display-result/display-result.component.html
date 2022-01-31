@@ -1,6 +1,6 @@
 <div class="container">
 
-    
+
     <div>
         <div class="outcomeDisplay">
             <h1>You {{gameResult}} ! </h1>
@@ -9,7 +9,14 @@
     </div>
 
     <div class="buttonBox">
-        <button routerLink="selection">Try Again?</button>
-        
+
+
+        <button mat-raised-button color="primary" 
+                class="shootButton" routerLink="rounds" 
+                matTooltip="Have another go?"
+                matTooltipHideDelay="1"
+                aria-label="Button that displays a tooltip that hides when scrolled out of the container"
+                >Try Again?</button>
+
     </div>
-</div>  
+</div>

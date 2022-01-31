@@ -69,6 +69,7 @@ getWinner(){
 
 // change to post request
   getGameResult(){
+    ///TODO need to write the endpoint for
     let request = this.httpClient.post<serverResponse[]>(this.apiURL,
     {
       Username: this.gameService.username,
