@@ -14,14 +14,14 @@ export class DisplayResultComponent implements OnInit {
   constructor(private gameResultService: GameResultService, private router: Router) { }
 
   ngOnInit(): void {
-    this.showGameResult();
-    this.gameResultService.getWinner();
-    this.gameResultService.calulateWinner();
-    this.gameResult = this.gameResultService.gameOutcome;
+    this.getGameResult();
+    this.gameResult = this.gameResultService.results.GameWinner;
   }
-  showGameResult(){
+  getGameResult(){
     this.gameResultService.getGameResult();
   }
+
+  
 
 
 

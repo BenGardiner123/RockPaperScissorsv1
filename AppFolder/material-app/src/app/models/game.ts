@@ -1,3 +1,5 @@
+import { Round } from "./round";
+
 //create game model for the behavior subject
 export interface Game {
     username: string;
@@ -16,3 +18,13 @@ export interface GameCheckRequestModel {
     currentRound: number;
     DateTimeStarted: Date;
 }
+
+export interface GameResultRequestModel {
+    username: string;
+    DateTimeStarted: Date;
+}   
+
+export interface GameResultResponseModel {
+    Rounds: Round[];
+    GameWinner: string;
+}   

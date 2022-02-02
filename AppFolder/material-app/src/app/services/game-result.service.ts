@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { GameResultResponseModel } from '../models/game';
 import { serverResponse } from '../models/serverResonse';
 import { GameService } from './game.service';
 
@@ -14,71 +15,29 @@ export class GameResultService {
     
   }
 
-  private apiURL = environment.apiURL + "GameResult";
+  private apiURL = environment.apiURL + "Game";
   
 
   // game outcome will tally the results from all the rounds and decide if you won
   // public gameOutcomeResults: [];
   public gameOutcome: string | null;
-  public results: serverResponse[];
-  public wincounter: number = 0;
-  public loseCounter: number = 0;
-  public drawCounter: number = 0;
 
-
-
-getWinner(){
-  // looping through each line in the object and pushing the counter
-  for (var index in this.results) {
-    // console.log("xxxxx");
-    // console.log(this.results[index].outcome);
-      if(this.results[index].outcome == "W"){
-        this.wincounter++;
-        console.log("Win");
-      }
-      else if (this.results[index].outcome == "L"){
-        this.loseCounter++;
-        console.log("Lose");
-      }
-      else if (this.results[index].outcome == "D"){
-        this.drawCounter++;
-        console.log("Draw");
-      }
-    }
-    console.log(this.wincounter + " ;" + this.drawCounter + " ;" + this.drawCounter );
-  };
-
-  calulateWinner(){
-  // testing the counters to produce a winnner
-   if(this.wincounter > this.loseCounter || this.wincounter > this.drawCounter){
-     this.gameOutcome = "Win"
-      console.log(this.gameOutcome);
-    } 
-   else if (this.loseCounter > this.wincounter || this.loseCounter > this.drawCounter ){
-     this.gameOutcome = "Lose"
-     console.log(this.gameOutcome);
-    }
-   else if(this.drawCounter >= this.wincounter || this.drawCounter >= this.loseCounter){
-     this.gameOutcome = "Draw"
-     console.log(this.gameOutcome);
-    }
-  }
-
-   
-    
+  public results: GameResultResponseModel;
+  
 
 // change to post request
   getGameResult(){
     ///TODO need to write the endpoint for
-    let request = this.httpClient.post<serverResponse[]>(this.apiURL,
+    let request = this.httpClient.post<GameResultResponseModel>(this.apiURL + "/GameResult",
     {
-      Username: this.gameService.username,
+      username: this.gameService.username,
       dateTimeStarted: this.gameService.startDateTime,
     });
     request.subscribe((response) => {
     //this stores the selection being pushed over from the compnent into the variable above
     this.results = response;
-    this.router.navigateByUrl("/Result");
+    console.log(this.results);
+    this.router.navigateByUrl("/results");
     }, (error) => {
           if(error.status == 401){
             alert("Sorry - you are not authorized to do that")
