@@ -5,6 +5,7 @@
         <div class="outcomeDisplay">
             <h1>You {{gameResult + " Wins"}} ! </h1>
         </div>
+        <!-- TODO  need to reinstate this - the service is getting the right info just need to reimplement -->
         <!-- <app-rps-result-detail *ngFor="let gameResult of gameResultService.results" [results]="gameResult"></app-rps-result-detail> -->
     </div>
 
@@ -15,6 +16,7 @@
                 class="shootButton" routerLink="rounds" 
                 matTooltip="Have another go?"
                 matTooltipHideDelay="1"
+                (click)="reset()"
                 aria-label="Button that displays a tooltip that hides when scrolled out of the container"
                 >Try Again?</button>
 

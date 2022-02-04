@@ -24,7 +24,14 @@ export interface GameResultRequestModel {
     DateTimeStarted: Date;
 }   
 
-export interface GameResultResponseModel {
-    Rounds: Round[];
-    GameWinner: string;
+export interface GameResultResponseModel_Round {
+    roundNumber: number;
+    PlayerOneChoice: string;
+    PlayerTwoChoice: string;
+    Winner: string;
 }   
+
+export interface GameResultResponseModel{
+    rounds: GameResultResponseModel_Round[];
+    gameWinner: string;
+} 

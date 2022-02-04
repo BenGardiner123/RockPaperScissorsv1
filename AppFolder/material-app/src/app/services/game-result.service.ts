@@ -16,10 +16,7 @@ export class GameResultService {
   }
 
   private apiURL = environment.apiURL + "Game";
-  
 
-  // game outcome will tally the results from all the rounds and decide if you won
-  // public gameOutcomeResults: [];
   public gameOutcome: string | null;
 
   public results: GameResultResponseModel;
@@ -27,7 +24,7 @@ export class GameResultService {
 
 // change to post request
   getGameResult(){
-    ///TODO need to write the endpoint for
+  
     let request = this.httpClient.post<GameResultResponseModel>(this.apiURL + "/GameResult",
     {
       username: this.gameService.username,
@@ -36,6 +33,8 @@ export class GameResultService {
     request.subscribe((response) => {
     //this stores the selection being pushed over from the compnent into the variable above
     this.results = response;
+    //set the winner in the behavior subject
+    this.gameOutcome = this.results.gameWinner;
     console.log(this.results);
     this.router.navigateByUrl("/results");
     }, (error) => {

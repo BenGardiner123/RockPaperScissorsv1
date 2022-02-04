@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { GameResultService } from 'src/app/services/game-result.service';
+import { GameService } from 'src/app/services/game.service';
 
 @Component({
   selector: 'app-display-result',
@@ -11,14 +12,16 @@ export class DisplayResultComponent implements OnInit {
 
   public gameResult: string;
 
-  constructor(private gameResultService: GameResultService, private router: Router) { }
+  constructor(private gameResultService: GameResultService, private router: Router, private gameService: GameService) { }
 
   ngOnInit(): void {
-    this.getGameResult();
-    this.gameResult = this.gameResultService.results.GameWinner;
+    this.gameResult = this.gameResultService.gameOutcome;
   }
-  getGameResult(){
-    this.gameResultService.getGameResult();
+ 
+  
+
+  reset(){
+    this.gameService.resetGame();
   }
 
   

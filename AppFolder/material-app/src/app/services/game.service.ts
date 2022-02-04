@@ -168,6 +168,17 @@ export class GameService {
 
   }
 
+  resetGame(){
+    this.gameDataSource.value.roundCounter = 1;
+    this.gameDataSource.value.selection = "";
+    this.gameDataSource.value.aiSelection = "";
+    this.gameDataSource.value.outcome = "";
+    this.gameDataSource.value.startDateTime = null;
+    this.gameDataSource.value.roundLimit = 0;
+    //then route to the round selection 
+    this.router.navigateByUrl("/rounds");
+  }
+
 
   public roundCheck() {
     if (this.gameDataSource.value.roundCounter < this.gameDataSource.value.roundLimit) {

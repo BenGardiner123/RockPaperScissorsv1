@@ -66,18 +66,21 @@ export class UserChoiceComponent implements OnInit {
           this.ngOnInit();
         }
         else {
-          /// TODO need to create a results page for this
-          this.router.navigateByUrl("/results");
-        }  
+          //run the get game result function
+          this.gameResultService.getGameResult();
+        }
+       
       }
       else if (this.paperSelected) {
         this.gameService.commitSelection("Paper");
         if (this.gameService.roundCheck()) {
           this.ngOnInit();
         }
-        else {     
-          this.router.navigateByUrl("/results");
+        else {
+          //run the get game result function
+          this.gameResultService.getGameResult();
         }
+        
       }
       else if (this.scissorsSelected) {
         this.gameService.commitSelection("Scissors");
@@ -85,8 +88,10 @@ export class UserChoiceComponent implements OnInit {
           this.ngOnInit();
         }
         else {
-          this.router.navigateByUrl("/results");
+          //run the get game result function
+          this.gameResultService.getGameResult();
         }
+       
 
       }
 
