@@ -1,9 +1,11 @@
-export interface Leaderboard
-{
-    username: string | null,
-    winRatio: number,
-    turnsPlayed: number;
-    
+export interface Leaderboard {
+    username: string;
+    gamesPlayed: number;
+    gamesWon: number;
+    gamesLost: number;
+    gamesTied: number;
+    winPercentage: number;
+    mostUsedChoice: string;
 }
 
 export interface LastFiveOutcomes
@@ -12,6 +14,6 @@ export interface LastFiveOutcomes
 }
 
 export interface LeaderboardEnvelope {
-    leaderboard: Leaderboard[];
+    leaders: Leaderboard[];
 }
 

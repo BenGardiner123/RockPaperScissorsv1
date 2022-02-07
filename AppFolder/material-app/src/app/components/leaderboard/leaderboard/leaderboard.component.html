@@ -1,1 +1,46 @@
-<p>leaderboard works!</p>
+
+
+<table mat-table [dataSource]="dataSource"  class="mat-elevation-z8">
+
+    <ng-container matColumnDef="username">
+        <th mat-header-cell *matHeaderCellDef> Username </th>
+      <td mat-cell *matCellDef="let element"> {{element.username}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="gamesPlayed">
+      <th mat-header-cell *matHeaderCellDef> Games Played </th>
+      <td mat-cell *matCellDef="let element"> {{element.gamesPlayed}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="gamesWon">
+      <th mat-header-cell *matHeaderCellDef> Games Won </th>
+      <td mat-cell *matCellDef="let element"> {{element.gamesWon }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="gamesLost">
+      <th mat-header-cell *matHeaderCellDef> Games Lost </th>
+      <td mat-cell *matCellDef="let element"> {{element.gamesLost}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="gamesTied">
+      <th mat-header-cell *matHeaderCellDef> Games Tied </th>
+      <td mat-cell *matCellDef="let element"> {{element.gamesTied}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="winPercentage">
+      <th mat-header-cell *matHeaderCellDef> Win Percentage </th>
+      <td mat-cell *matCellDef="let element"> {{element.winPercentage}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="mostUsedChoice">
+        <th mat-header-cell *matHeaderCellDef> Most Used Choice </th>
+        <td mat-cell *matCellDef="let element"> {{element.mostUsedChoice}} </td>
+      </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+  </table>
+
+
+  

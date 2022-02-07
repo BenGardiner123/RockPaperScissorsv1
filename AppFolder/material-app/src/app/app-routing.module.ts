@@ -5,12 +5,13 @@ import { SignupComponent } from './components/auth/signup/signup.component';
 import { DisplayResultComponent } from './components/game/display-result/display-result.component';
 import { RoundSelectionComponent } from './components/game/round-selection/round-selection.component';
 import { UserChoiceComponent } from './components/game/user-choice/user-choice.component';
+import { LeaderboardComponent } from './components/leaderboard/leaderboard/leaderboard.component';
 import { GameResultService } from './services/game-result.service';
 
 const routes: Routes = [
   {path: "selection", component: UserChoiceComponent},
   {path: "results", component: DisplayResultComponent},
-  // {path: "Leaderboard", component: RpsLeaderboardComponent},
+  {path: "leaderboard", component: LeaderboardComponent},
   {path: "rounds", component: RoundSelectionComponent},
   {path: "signup", component: SignupComponent},
   {path: "login", component: LoginComponent},
