@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -9,11 +11,8 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 export class LoginComponent implements OnInit {
 
 
-  constructor() {
-
-   }
+  constructor(private auth: AuthService, private router: Router) { }
   
-
   ngOnInit() {
    
   }
@@ -22,7 +21,7 @@ export class LoginComponent implements OnInit {
   //isnt what i wanted
 
   loginForm = new FormGroup({
-    email: new FormControl('', [Validators.required, Validators.email]),
+    username: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required, Validators.minLength(6), 
       //add validator pattern 1 capital letter and 1 number and no special characters
       Validators.pattern('^(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$')]),
@@ -30,6 +29,18 @@ export class LoginComponent implements OnInit {
   });
 
   onLoginSubmit() {
-    console.log(this.loginForm);
-  }
+    //get the form values
+    const username = this.loginForm.get('username').value;
+    const password = this.loginForm.get('password').value;
+
+   this.auth.login(username, password).subscribe({
+      next: (data) => {
+        console.log(data);
+        if (data.token !== null) {
+          this.router.navigate(['/rounds']);
+        }
+      }
+   }
+  )}
+
 }

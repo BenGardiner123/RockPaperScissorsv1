@@ -23,13 +23,13 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  register(newUser: RegisterUserRequestModel) {
-    return this.http.post<RegisterUserResponseModel>(`${environment.authURL}/Authenticate/register`, { newUser });
+  register(username: string, email: string, password: string) {
+    return this.http.post<RegisterUserResponseModel>(`${environment.authURL}Authenticate/register`, { username, email, password }) ;
   }
 
 
-  login(userLogin: LoginUserRequestModel) {
-    return this.http.post<LoginUserResponseModel>(`${environment.authURL}/Authenticate/login`, { userLogin })
+  login(username: string, password: string) {
+    return this.http.post<LoginUserResponseModel>(`${environment.authURL}Authenticate/login`, { username, password })
       .pipe(map(user => {
         // store user details and jwt token in local storage to keep user logged in between page refreshes
         localStorage.setItem('currentUser', JSON.stringify(user));

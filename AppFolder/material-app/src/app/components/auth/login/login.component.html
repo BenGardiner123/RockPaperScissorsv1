@@ -11,14 +11,16 @@
       <form class="form-container" [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
         <div class="form-group">
           <mat-form-field>
-            <input matInput placeholder="Email" formControlName="email">
+            <input matInput placeholder="Username" formControlName="username">
           </mat-form-field>
          
-         <!-- create a mat-error if email is invalid -->
-          <mat-error *ngIf="loginForm.controls.email.invalid && loginForm.controls.email.touched">
-              <span *ngIf="loginForm.controls.email.errors.required">Email is required</span>
-              <span *ngIf="loginForm.controls.email.errors.email">Email is invalid</span>
+         <!-- create a mat-error if username is dirty and  is invalid -->
+          <mat-error *ngIf="loginForm.controls.username.invalid && loginForm.controls.username.touched">
+            <span *ngIf="loginForm.controls.username.errors.required">
+              Username is required
+            </span>
           </mat-error>
+          
           
         </div>
         <div class="form-group">
@@ -36,7 +38,7 @@
 
   
         <div class="form-group">
-          <button class="loginButton" mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">Sign up</button>
+          <button class="loginButton" mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">Login</button>
         </div>
 
         <!-- create a link to the register component  -->

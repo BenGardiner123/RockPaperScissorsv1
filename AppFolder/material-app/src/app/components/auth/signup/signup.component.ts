@@ -36,19 +36,17 @@ export class SignupComponent implements OnInit {
 
   onSignupSubmit() {
 
-    //get the values from the form and pass them into a RegisterUser type
-    const newUser: RegisterUserRequestModel = {
-      username: this.signUpForm.get('username').value,
-      email: this.signUpForm.get('email').value,
-      password: this.signUpForm.get('password').value,
-    }
+    //get the form values
+    const username = this.signUpForm.get('username').value;
+    const email = this.signUpForm.get('email').value;
+    const password = this.signUpForm.get('password').value;
 
     //call the auth service
-    this.authService.register(newUser).subscribe(
+    this.authService.register(username, email, password).subscribe(
       data => {
         console.log(data);
         // if data is equal to success or whatever is coming back then set isRegistered to true
-        if (data) {
+        if (data.message === 'success') {
           this.isRegistered = true;
           //then lets navigate via the router to the login page
           this.router.navigate(['/login']);
