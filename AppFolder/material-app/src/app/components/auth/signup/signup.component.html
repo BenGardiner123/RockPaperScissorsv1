@@ -1,32 +1,56 @@
+<div class="signup-card-container">
+  <mat-card>
 
-  <!-- create a signup form here using material reactive forms-->
-  <form class="form-container" [formGroup]="signupForm" (ngSubmit)="onSubmit()">
-    <h2 class="form-title">Sign up</h2>
+    <mat-card-title>Sign up</mat-card-title>
 
-    <div class="form-group">
-      <mat-form-field >
-        <input matInput placeholder="Username" formControlName="username">
-      </mat-form-field>
-    </div>
-    <div class="form-group">
-      <mat-form-field >
-        <input matInput placeholder="Email" formControlName="email">
-      </mat-form-field>
-    </div>
-    <div class="form-group">
-      <mat-form-field >
-        <input matInput placeholder="Password" formControlName="password" type="password">
-      </mat-form-field>
-    </div>
-   
-    <div class="form-group">
-      <button mat-raised-button color="primary" type="submit" [disabled]="!signupForm.valid">Sign up</button>
-    </div>
-    
-  </form>
+    <div class="signup-form-container">
+
+      <form class="form-container" [formGroup]="signUpForm" (ngSubmit)="onSignupSubmit()">
+
   
+        <div class="form-group">
+          <mat-form-field>
+            <input matInput placeholder="Username" formControlName="username">
+          </mat-form-field>
+          <!-- create a mat-error if username is dirty and invalid -->
+          <mat-error *ngIf="signUpForm.controls.username.invalid && signUpForm.controls.username.touched">
+            <span *ngIf="signUpForm.controls.username.errors.required">Username is required</span>
+            
+          </mat-error>
+        </div>
 
+        <div class="form-group">
+          <mat-form-field>
+            <input matInput placeholder="Email" formControlName="email">
+          </mat-form-field>
+          <!-- create a mat-error if email is dirty and invalid -->
+          <mat-error *ngIf="signUpForm.controls.email.invalid && signUpForm.controls.email.touched">
+            <span *ngIf="signUpForm.controls.email.errors.required">Email is required</span>
+            <span *ngIf="signUpForm.controls.email.errors.email">Email is invalid</span>
+          </mat-error>
+        </div>
 
+        <div class="form-group">
+          <mat-form-field>
+            <input matInput placeholder="Password" formControlName="password" type="password">
+          </mat-form-field>
+          <!-- create a mat-error if password is dirty and invalid -->
+          <mat-error *ngIf="signUpForm.controls.password.invalid && signUpForm.controls.password.touched">
+            <span *ngIf="signUpForm.controls.password.errors.required">Password is required</span>
+            <span *ngIf="signUpForm.controls.password.errors.minlength">Password must be at least 6 characters</span><br>
+            <!-- new line -->
+            <span *ngIf="signUpForm.controls.password.errors.pattern">Requires one number and one capital letter and no special characters</span>
+          </mat-error>
+        </div>
 
+        <div id="signupButton" class="form-group">
+          <button  mat-raised-button color="primary" type="submit" [disabled]="!signUpForm.valid">Sign up</button>
+        </div>
 
+      </form>
 
+    </div>
+
+  </mat-card>
+
+</div>

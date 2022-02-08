@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup, NgForm, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -9,34 +10,49 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class SignupComponent implements OnInit {
 
-  signupForm: FormGroup
+  
 
   isRegistered: boolean = false;
 
   constructor(
-    private formBuilder: FormBuilder, private authService: AuthService
+     private authService: AuthService,
+     private router: Router,
+
   ) { }
   
 
   ngOnInit() {
-    this.signupForm = this.formBuilder.group({
-      username: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6), //add validator pattern 1 capital letter and 1 number
-        Validators.pattern('^(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$')]],
-    })
+   
 
   }
 
+  signUpForm = new FormGroup({
+    username: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required, Validators.minLength(6), 
+      //add validator pattern 1 capital letter and 1 number and no special characters
+      Validators.pattern('^(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$')]),
+    
+  });
 
-  onSubmit() {
+
+  onSignupSubmit() {
     //get the values form the form
-    const { username, email, password } = this.signupForm.value;
+    const username = this.signUpForm.get('username').value;
+    const email = this.signUpForm.get('email').value;
+    const password = this.signUpForm.get('password').value;
+
     //call the auth service
     this.authService.register(username, email, password).subscribe(
       data => {
         console.log(data);
-        this.isRegistered = true;
+        // if data is equal to success then set isRegistered to true
+        if (data) {
+          this.isRegistered = true;
+          //navigate via the router to the login page
+          this.router.navigate(['/login']);
+         
+        }
       }
     )
     

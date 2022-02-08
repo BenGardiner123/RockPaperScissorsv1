@@ -8,10 +8,6 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 })
 export class LoginComponent implements OnInit {
 
-  
-
-  
-
 
   constructor() {
 
@@ -30,10 +26,7 @@ export class LoginComponent implements OnInit {
     password: new FormControl('', [Validators.required, Validators.minLength(6), 
       //add validator pattern 1 capital letter and 1 number and no special characters
       Validators.pattern('^(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$')]),
-      
     
-
-
   });
 
   onLoginSubmit() {
