@@ -33,7 +33,7 @@
               <span *ngIf="loginForm.controls.password.errors.required">Password is required</span>
               <span *ngIf="loginForm.controls.password.errors.minlength">Password must be at least 6 characters</span><br>
             <!-- new line -->
-              <span *ngIf="loginForm.controls.password.errors.pattern">Password must contain at least one number and one capital letter</span>
+              <span *ngIf="loginForm.controls.password.errors.pattern">Requires one number and one capital letter and no special characters</span>
           </mat-error>
         </div>
 
