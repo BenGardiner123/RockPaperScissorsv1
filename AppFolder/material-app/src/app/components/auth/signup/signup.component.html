@@ -2,7 +2,12 @@
   <!-- create a signup form here using material reactive forms-->
   <form class="form-container" [formGroup]="signupForm" (ngSubmit)="onSubmit()">
     <h2 class="form-title">Sign up</h2>
-   
+
+    <div class="form-group">
+      <mat-form-field >
+        <input matInput placeholder="Username" formControlName="username">
+      </mat-form-field>
+    </div>
     <div class="form-group">
       <mat-form-field >
         <input matInput placeholder="Email" formControlName="email">

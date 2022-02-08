@@ -1,3 +1,49 @@
 mat-form-field {
-    width: 300px;
-  }
+    width: 20rem;
+    //center the label
+    margin: 0 auto;
+}
+
+mat-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 30rem;
+    height: 23rem;
+    margin:  auto;
+    text-align: center;
+    //align verticallly
+    align-items: center;
+  
+}
+
+mat-card-title {
+  margin: 0 auto;
+}
+
+.login-form-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+
+}
+
+.login-card-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.loginButton{
+    margin-top: 1rem;
+   
+}
+
+#register-link{
+    margin-top: 1rem;
+    
+}
