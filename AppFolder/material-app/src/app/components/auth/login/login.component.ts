@@ -22,6 +22,9 @@ export class LoginComponent implements OnInit {
    
   }
 
+  //TODO this validator below needs to allow special characters, at the moment its enforcing one which
+  //isnt what i wanted
+
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(6), 
