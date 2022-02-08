@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup, NgForm, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
+import { RegisterUserRequestModel } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -9,8 +10,6 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent implements OnInit {
-
-  
 
   isRegistered: boolean = false;
 
@@ -22,7 +21,6 @@ export class SignupComponent implements OnInit {
   
 
   ngOnInit() {
-   
 
   }
 
@@ -37,19 +35,22 @@ export class SignupComponent implements OnInit {
 
 
   onSignupSubmit() {
-    //get the values form the form
-    const username = this.signUpForm.get('username').value;
-    const email = this.signUpForm.get('email').value;
-    const password = this.signUpForm.get('password').value;
+
+    //get the values from the form and pass them into a RegisterUser type
+    const newUser: RegisterUserRequestModel = {
+      username: this.signUpForm.get('username').value,
+      email: this.signUpForm.get('email').value,
+      password: this.signUpForm.get('password').value,
+    }
 
     //call the auth service
-    this.authService.register(username, email, password).subscribe(
+    this.authService.register(newUser).subscribe(
       data => {
         console.log(data);
-        // if data is equal to success then set isRegistered to true
+        // if data is equal to success or whatever is coming back then set isRegistered to true
         if (data) {
           this.isRegistered = true;
-          //navigate via the router to the login page
+          //then lets navigate via the router to the login page
           this.router.navigate(['/login']);
          
         }
