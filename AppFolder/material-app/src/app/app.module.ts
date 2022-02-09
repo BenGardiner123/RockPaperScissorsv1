@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { JwtModule } from '@auth0/angular-jwt';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,6 +14,10 @@ import { UserChoiceComponent } from './components/game/user-choice/user-choice.c
 import { LeaderboardComponent } from './components/leaderboard/leaderboard/leaderboard.component';
 import { GameContainerComponent } from './components/game/game-container/game-container.component';
 import { HttpClientModule } from '@angular/common/http';
+
+export function tokenGetter() {
+  return localStorage.getItem('token');
+}
 
 @NgModule({
   declarations: [
@@ -30,8 +35,16 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
-    HttpClientModule
+    HttpClientModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        allowedDomains: ["localhost:7026", "localhost:4200", "localhost:5066"],
+        disallowedRoutes: []
+      }
+    })
   ],
+ 
   providers: [],
   bootstrap: [AppComponent]
 })
