@@ -19,7 +19,8 @@ import {MatPaginatorModule} from '@angular/material/paginator'
 import {MatChipsModule} from '@angular/material/chips'
 import { ReactiveFormsModule } from '@angular/forms';
 import {MatCardModule} from '@angular/material/card';
-import {MatProgressBar} from '@angular/material/progress-bar';
+import {MatDialogModule} from '@angular/material/dialog';
+
 import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
@@ -43,7 +44,8 @@ import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
     MatChipsModule,
     ReactiveFormsModule,
     MatCardModule,
-    MatTooltipModule
+    MatTooltipModule, 
+    MatDialogModule
   ],
   imports: [
     CommonModule

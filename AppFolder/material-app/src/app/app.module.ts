@@ -14,6 +14,8 @@ import { UserChoiceComponent } from './components/game/user-choice/user-choice.c
 import { LeaderboardComponent } from './components/leaderboard/leaderboard/leaderboard.component';
 import { GameContainerComponent } from './components/game/game-container/game-container.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ErrorComponent } from './components/dialogs/error/error.component';
+import { SuccessComponent } from './components/dialogs/success/success.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -28,8 +30,10 @@ export function tokenGetter() {
     DisplayResultComponent,
     UserChoiceComponent,
     LeaderboardComponent,
-    GameContainerComponent
+    GameContainerComponent,
+    SuccessComponent
   ],
+  entryComponents: [ErrorComponent, SuccessComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

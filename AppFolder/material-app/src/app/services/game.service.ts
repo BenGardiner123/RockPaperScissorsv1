@@ -32,13 +32,15 @@ export class GameService {
   public isAuthenticated: boolean = false;
 
   constructor(private router: Router, private httpClient: HttpClient, private authService: AuthService) {
-    this.loadUsername();
+    this.loadUsername(this.authService.getUsername());
     console.log("game service constructor", this.gameDataSource.value);
   }
 
 
-  loadUsername() {
-    this.gameDataSource.value.username = this.authService.getUsername();
+  loadUsername(username: string ) {
+    console.log("load username is being called", username);
+    this.gameDataSource.value.username = username;
+
   }
 
   //get starttime from the gameDataSource
@@ -75,14 +77,17 @@ export class GameService {
     //create a new date object to store the current time
     let NewGameTime = new Date().toISOString();
     console.log("start game");
-    //create a new game object to store the data
+    let usercheck = this.username;
+    console.log("username Check", usercheck);
 
     return this.httpClient.post(this.apiURL + "/StartGame", {
-      username: this.username,
+      //get the username from the authservice
+      username : this.username,
       roundLimit: roundLimit,
       DateTimeStarted: NewGameTime,
       roundCounter: this.roundCounter
     }).subscribe({
+      
       next: (response) => {
         console.log("this is the response", response);
       },

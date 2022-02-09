@@ -25,3 +25,8 @@ export interface LoginUserResponseModel {
     email: string;
     token?: string;
 }
+
+export interface RegisterUsernameResponseModel {
+    status: string;
+    message: string;
+}

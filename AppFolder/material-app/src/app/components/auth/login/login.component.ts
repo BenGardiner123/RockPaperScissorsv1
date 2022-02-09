@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { GameService } from 'src/app/services/game.service';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class LoginComponent implements OnInit {
 
 
-  constructor(private auth: AuthService, private router: Router) { }
+  constructor(private auth: AuthService, private router: Router, private gameService: GameService) { }
   
   ngOnInit() {
    
@@ -35,6 +36,8 @@ export class LoginComponent implements OnInit {
 
    this.auth.login(username, password).subscribe({
       next: (data) => {
+        //send the username to the auth service
+        this.gameService.loadUsername(username);
         console.log(data);
         if (data.token !== null) {
           this.router.navigate(['/rounds']);
