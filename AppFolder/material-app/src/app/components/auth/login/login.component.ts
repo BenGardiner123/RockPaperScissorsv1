@@ -15,7 +15,9 @@ export class LoginComponent implements OnInit {
   constructor(private auth: AuthService, private router: Router, private gameService: GameService) { }
   
   ngOnInit() {
-   
+   //clear any user data
+    this.auth.logout();
+    this.gameService.resetGame();
   }
 
   //TODO this validator below needs to allow special characters, at the moment its enforcing one which

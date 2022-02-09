@@ -32,7 +32,7 @@ export class GameService {
   public isAuthenticated: boolean = false;
 
   constructor(private router: Router, private httpClient: HttpClient, private authService: AuthService) {
-    this.loadUsername(this.authService.getUsername());
+
     console.log("game service constructor", this.gameDataSource.value);
   }
 
@@ -77,6 +77,7 @@ export class GameService {
     //create a new date object to store the current time
     let NewGameTime = new Date().toISOString();
     console.log("start game");
+    this.loadUsername(this.authService.getUsername());
     let usercheck = this.username;
     console.log("username Check", usercheck);
 
@@ -141,47 +142,20 @@ export class GameService {
     //if it is over then need to navigate to the results page
     //if it is not over then need to navigate to the selection page
 
-
-  }
-
-  // change to post request
-  getGameResult() {
-    //   let request = this.httpClient.post<serverResponse[]>(this.apiURL,
-    //   {
-    //     Username: this.rockPaperScissors.username,
-    //     dateTimeStarted: this.rockPaperScissors.startDateTime,
-    //   });
-    //   request.subscribe((response) => {
-    //   //this stores the selection being pushed over from the compnent into the variable above
-    //   this.results = response;
-    //   this.router.navigateByUrl("/Result");
-    //   }, (error) => {
-    //         if(error.status == 401){
-    //           alert("Sorry - you are not authorized to do that")
-    //         }
-    //         if(error.status == 405){
-    //           alert("The method exists but not supported by the target - potentially incorrct formating")
-    //         }
-    //         if(error.status == 404){
-    //           alert("The origin server did not find a current representation for the target resource or is not willing to disclose that one exists.")
-    //         }
-    //         if(error.status == 500){
-    //           alert("It is likely that some undetermined error occured.. internally. Have you tried switching it off and on again? ")
-    //         }
-
-    // });
-
   }
 
   resetGame(){
-    this.gameDataSource.value.roundCounter = 1;
-    this.gameDataSource.value.selection = "";
-    this.gameDataSource.value.aiSelection = "";
-    this.gameDataSource.value.outcome = "";
-    this.gameDataSource.value.startDateTime = null;
-    this.gameDataSource.value.roundLimit = 0;
-    //then route to the round selection 
-    this.router.navigateByUrl("/rounds");
+    //clear the gamedataSource behaavior subject
+    this.gameDataSource.next({
+      username: null,
+      startDateTime: null,
+      roundCounter: 1,
+      roundLimit: 0,
+      aiSelection: "",
+      selection: "",
+      outcome: ""
+    });
+
   }
 
 

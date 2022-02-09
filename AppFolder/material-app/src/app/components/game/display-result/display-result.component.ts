@@ -17,7 +17,19 @@ export class DisplayResultComponent implements OnInit {
   ngOnInit(): void {
     this.gameResult = this.gameResultService.gameOutcome;
   }
- 
+  
+  //get the value from game result
+  getResultString(){
+    if(this.gameResult === 'Player One'){
+      return 'You Win';
+    }
+    else if(this.gameResult === 'Player Two'){
+      return 'You Lose';
+    }
+    else{
+      return 'Draw';
+    }
+  }
   
 
   reset(){
