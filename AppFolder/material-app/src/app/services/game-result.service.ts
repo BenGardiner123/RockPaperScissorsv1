@@ -27,11 +27,12 @@ export class GameResultService {
   
     let request = this.httpClient.post<GameResultResponseModel>(this.apiURL + "/GameResult",
     {
-      username: this.gameService.username,
+      username: this.gameService.username, 
       dateTimeStarted: this.gameService.startDateTime,
     });
     request.subscribe((response) => {
     //this stores the selection being pushed over from the compnent into the variable above
+    console.log("what is the response, is game winner there?" , response);
     this.results = response;
     //set the winner in the behavior subject
     this.gameOutcome = this.results.gameWinner;
