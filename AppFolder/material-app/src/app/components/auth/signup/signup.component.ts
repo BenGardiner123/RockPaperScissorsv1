@@ -65,6 +65,16 @@ export class SignupComponent implements OnInit {
       this.signUpForm.reset();
       return;
     }
+    this.authService.register(username, email, password).subscribe({
+      next: (data) => {
+        if(data.status != 'Success'){
+          this.openErrorDialog();
+          return;
+        }
+      }
+    });
+
+    //create a forkjoin tp postNew player and authService.register
     this.playerService.postNewPlayer(username).subscribe({
       next: (data) => {
         if (data.status == 'Success'){

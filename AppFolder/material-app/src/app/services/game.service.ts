@@ -1,7 +1,6 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { environment } from 'src/environments/environment';
 import { Game, GameCheckRequestModel } from '../models/game';
@@ -17,25 +16,36 @@ export class GameService {
   //create a new httpresponse object to store the data;
   public data: HttpOutcome;
 
-
   //reuseable environemnt varible
   private apiURL = environment.apiURL + "Game";
 
   //create a behaviour subject to track the game state
 
-  private gameDataSource = new BehaviorSubject<Game>({ username: null, startDateTime: null, roundCounter: 1, roundLimit: 0, aiSelection: "", selection: "", outcome: "" });
-
-  gameData$ = this.gameDataSource.asObservable();
-
+  private gameDataSource = new BehaviorSubject<Game>({
+    username: null,
+    startDateTime: null,
+    roundCounter: 0,
+    roundLimit: 0,
+    aiSelection: "",
+    selection: "",
+    outcome: ""
+  });
+  
+  gameData = this.gameDataSource.asObservable();
+ 
   //  -------------------------------------------
 
   public isAuthenticated: boolean = false;
 
-  constructor(private router: Router, private httpClient: HttpClient, private authService: AuthService) {
+  constructor(private router: Router, 
+    private httpClient: HttpClient, 
+    private authService: AuthService) {
+
     console.log("game service constructor", this.gameDataSource.value);
     //this.userNameCheckOnLoad();
     
   }
+
 
   //if the authservice username has a value set the gameDataSource username to that
   userNameCheckOnLoad(){
@@ -100,7 +110,9 @@ export class GameService {
     }).subscribe({
       
       next: (response) => {
-        console.log("this is the response", response);
+        console.log("this is the response", response)
+        //naviate to the selection page
+        this.router.navigate(['/selection']);
       },
       error: (error) => {
         error.status;
@@ -130,8 +142,6 @@ export class GameService {
       this.gameDataSource.value.aiSelection = response.aiSelection;
       this.gameDataSource.value.outcome = response.outcome;
       this.gameDataSource.value.roundCounter++;
-     
-
     }, (error) => {
       if (error.status == 401) {
         alert("Sorry - you are not authorized to do that")

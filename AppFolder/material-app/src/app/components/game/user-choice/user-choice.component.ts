@@ -20,13 +20,13 @@ export class UserChoiceComponent implements OnInit {
   constructor(private gameService: GameService, private gameResultService: GameResultService, private router: Router) { }
 
   ngOnInit() {
-    ///this is going to have to come from
-    this.gameService.gameData$.subscribe(data => {
-      this.roundLimit = data.roundLimit;
+   this.gameService.gameData.subscribe(data => {
       this.roundCounter = data.roundCounter;
+      this.roundLimit = data.roundLimit;
     });
-    console.log(this.roundCounter);
-  }
+    console.log("roundCounter",this.roundCounter);  }
+
+
 
   chooseThis(option: "Rock" | "Paper" | "Scissors") {
     if (option == "Rock") {
@@ -55,7 +55,7 @@ export class UserChoiceComponent implements OnInit {
 
   makeSelection() {
     console.log("make selection");
-    if (this.gameService.gameData$ == null) {
+    if (this.gameService.gameData == null) {
       alert("Please enter a username before making a selection");
       return;
     }
