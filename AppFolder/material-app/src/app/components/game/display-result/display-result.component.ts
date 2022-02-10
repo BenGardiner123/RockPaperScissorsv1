@@ -34,6 +34,8 @@ export class DisplayResultComponent implements OnInit {
 
   reset(){
     this.gameService.resetGame();
+    //send me back to the round selection
+    this.router.navigate(['/rounds']);
   }
 
   

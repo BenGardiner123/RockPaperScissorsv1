@@ -23,7 +23,7 @@ export class GameService {
 
   //create a behaviour subject to track the game state
 
-  private gameDataSource = new BehaviorSubject<Game>({ "username": null, "startDateTime": null, "roundCounter": 1, "roundLimit": 0, "aiSelection": "", "selection": "", "outcome": "" });
+  private gameDataSource = new BehaviorSubject<Game>({ username: null, startDateTime: null, roundCounter: 1, roundLimit: 0, aiSelection: "", selection: "", outcome: "" });
 
   gameData$ = this.gameDataSource.asObservable();
 
@@ -32,14 +32,25 @@ export class GameService {
   public isAuthenticated: boolean = false;
 
   constructor(private router: Router, private httpClient: HttpClient, private authService: AuthService) {
-
     console.log("game service constructor", this.gameDataSource.value);
+    //this.userNameCheckOnLoad();
+    
+  }
+
+  //if the authservice username has a value set the gameDataSource username to that
+  userNameCheckOnLoad(){
+    if(this.authService.currentUserValue.username != null){
+      this.gameDataSource.value.username = this.authService.currentUserValue.username;
+    }
   }
 
 
-  loadUsername(username: string ) {
-    console.log("load username is being called", username);
-    this.gameDataSource.value.username = username;
+  loadUsername(newUserValue: string) {
+    this.userNameCheckOnLoad(); 
+    // if the username is null then set the username to the username passed in
+    if (this.gameDataSource.value.username == null) {
+    this.gameDataSource.value.username = newUserValue;
+    }
 
   }
 
@@ -69,7 +80,7 @@ export class GameService {
     var specificNewGameTime = new Date();
     this.gameDataSource.value.startDateTime = specificNewGameTime;
     this.gameDataSource.value.roundLimit = parseInt(roundNum);
-    // this.gameDataSource.value.roundCounter = 0;
+    this.gameDataSource.value.roundCounter++;
 
   }
 
@@ -77,7 +88,6 @@ export class GameService {
     //create a new date object to store the current time
     let NewGameTime = new Date().toISOString();
     console.log("start game");
-    this.loadUsername(this.authService.getUsername());
     let usercheck = this.username;
     console.log("username Check", usercheck);
 
@@ -147,7 +157,7 @@ export class GameService {
   resetGame(){
     //clear the gamedataSource behaavior subject
     this.gameDataSource.next({
-      username: null,
+      username: this.authService.currentUserValue.username,
       startDateTime: null,
       roundCounter: 1,
       roundLimit: 0,
