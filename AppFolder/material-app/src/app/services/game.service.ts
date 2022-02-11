@@ -1,6 +1,7 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { environment } from 'src/environments/environment';
 import { Game, GameCheckRequestModel } from '../models/game';
@@ -13,25 +14,22 @@ import { AuthService } from './auth.service';
 })
 export class GameService {
 
-  //create a new httpresponse object to store the data;
-  public data: HttpOutcome;
-
-  //reuseable environemnt varible
   private apiURL = environment.apiURL + "Game";
 
   //create a behaviour subject to track the game state
 
-  private gameDataSource = new BehaviorSubject<Game>({
-    username: null,
+  private gameDataSource$ = new BehaviorSubject<Game>({
+    username: "",
     startDateTime: null,
-    roundCounter: 0,
     roundLimit: 0,
+    roundCounter: 0,
     aiSelection: "",
+    outcome: "",
     selection: "",
-    outcome: ""
   });
-  
-  gameData = this.gameDataSource.asObservable();
+
+  gameData$: Observable<Game> = this.gameDataSource$.asObservable();
+
  
   //  -------------------------------------------
 
@@ -40,57 +38,39 @@ export class GameService {
   constructor(private router: Router, 
     private httpClient: HttpClient, 
     private authService: AuthService) {
+   
+   
+  }
 
-    console.log("game service constructor", this.gameDataSource.value);
-    //this.userNameCheckOnLoad();
-    
+  incrementCounter() {
+    this.gameDataSource$.next({
+      ...this.gameDataSource$.value,
+      roundCounter: this.gameDataSource$.value.roundCounter + 1
+    });
   }
 
 
-  //if the authservice username has a value set the gameDataSource username to that
-  userNameCheckOnLoad(){
-    if(this.authService.currentUserValue.username != null){
-      this.gameDataSource.value.username = this.authService.currentUserValue.username;
+
+  loadUsername() {
+    //check if the username in localstorage is null
+    if (localStorage.getItem("username") != null) {
+      let value = localStorage.getItem("username");
+      this.gameDataSource$.value.username = value;
     }
-  }
-
-
-  loadUsername(newUserValue: string) {
-    this.userNameCheckOnLoad(); 
-    // if the username is null then set the username to the username passed in
-    if (this.gameDataSource.value.username == null) {
-    this.gameDataSource.value.username = newUserValue;
+    else
+    {
+      alert("You are not logged in");
     }
 
+
   }
 
-  //get starttime from the gameDataSource
-
-  get startDateTime() {
-    return this.gameDataSource.value.startDateTime;
-  }
-
-  get roundLimit() {
-    return this.gameDataSource.value.roundLimit;
-  }
-
-  get roundCounter() {
-    return this.gameDataSource.value.roundCounter;
-  }
-
-  get aiSelection() {
-    return this.gameDataSource.value.aiSelection;
-  }
-
-  get username() {
-    return this.gameDataSource.value.username;
-  }
 
   commitRoundSelection(roundNum: '1' | '3' | '5') {
     var specificNewGameTime = new Date();
-    this.gameDataSource.value.startDateTime = specificNewGameTime;
-    this.gameDataSource.value.roundLimit = parseInt(roundNum);
-    this.gameDataSource.value.roundCounter++;
+    this.gameDataSource$.value.startDateTime = specificNewGameTime;
+    this.gameDataSource$.value.roundLimit = parseInt(roundNum);
+    this.gameDataSource$.value.roundCounter++;
 
   }
 
@@ -98,15 +78,15 @@ export class GameService {
     //create a new date object to store the current time
     let NewGameTime = new Date().toISOString();
     console.log("start game");
-    let usercheck = this.username;
+    let usercheck = this.gameDataSource$.value.username;
     console.log("username Check", usercheck);
 
     return this.httpClient.post(this.apiURL + "/StartGame", {
       //get the username from the authservice
-      username : this.username,
+      username : this.authService.currentUserValue.username,
       roundLimit: roundLimit,
       DateTimeStarted: NewGameTime,
-      roundCounter: this.roundCounter
+      roundCounter: this.gameDataSource$.value.roundCounter
     }).subscribe({
       
       next: (response) => {
@@ -124,14 +104,13 @@ export class GameService {
 
 
   commitSelection(option: "Rock" | "Paper" | "Scissors") {
-    this.gameDataSource.value.selection = option;
-    // this.gameDataSource.value.roundCounter++;
+    
     let outgoingGame = {
-      username: this.username,
+      username: this.authService.getUsername(),
       playerChoice: option,
-      roundLimit: this.roundLimit,
-      DateTimeStarted: this.startDateTime,
-      roundCounter: this.roundCounter,
+      roundLimit: this.gameDataSource$.value.roundLimit,  
+      DateTimeStarted: this.gameDataSource$.value.startDateTime,
+      roundCounter: this.gameDataSource$.value.roundCounter,
 
     };
     console.log("outgoing object", outgoingGame);
@@ -139,9 +118,9 @@ export class GameService {
     request.subscribe((response) => {
       //this stores the selection being pushed over from the compnent into the variable above
       console.log("this is whats coming back", response);
-      this.gameDataSource.value.aiSelection = response.aiSelection;
-      this.gameDataSource.value.outcome = response.outcome;
-      this.gameDataSource.value.roundCounter++;
+      this.gameDataSource$.value.aiSelection = response.aiSelection;
+      this.gameDataSource$.value.outcome = response.outcome;
+      
     }, (error) => {
       if (error.status == 401) {
         alert("Sorry - you are not authorized to do that")
@@ -166,21 +145,22 @@ export class GameService {
 
   resetGame(){
     //clear the gamedataSource behaavior subject
-    this.gameDataSource.next({
-      username: this.authService.currentUserValue.username,
+    let data = JSON.parse(localStorage.getItem("auth_data"));
+    this.gameDataSource$.next({ 
+      username: data.username,
       startDateTime: null,
-      roundCounter: 1,
       roundLimit: 0,
+      roundCounter: 0,
       aiSelection: "",
+      outcome: "", 
       selection: "",
-      outcome: ""
     });
 
   }
 
 
   public roundCheck() {
-    if (this.gameDataSource.value.roundCounter < this.gameDataSource.value.roundLimit) {
+    if (this.gameDataSource$.value.roundCounter < this.gameDataSource$.value.roundLimit) {
       return true;
     }
     else {

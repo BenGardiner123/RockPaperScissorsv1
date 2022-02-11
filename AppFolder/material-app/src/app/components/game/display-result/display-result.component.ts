@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { GameResultResponseModel, GameWinnerResultResponseModel } from 'src/app/models/game';
 import { GameResultService } from 'src/app/services/game-result.service';
 import { GameService } from 'src/app/services/game.service';
 
@@ -10,32 +11,48 @@ import { GameService } from 'src/app/services/game.service';
 })
 export class DisplayResultComponent implements OnInit {
 
-  public gameResult: string;
+  public gameResult: GameResultResponseModel;
+  public gameWinner: GameWinnerResultResponseModel;
 
-  constructor(private gameResultService: GameResultService, private router: Router, private gameService: GameService) { }
+  public winner: boolean;
+  public loser: boolean;
+  public draw: boolean;
 
-  ngOnInit(): void {
-    this.gameResult = this.gameResultService.gameOutcome;
-  }
+  constructor(private gameResultService: GameResultService, private router: Router, private gameService: GameService) {
   
+  }
+   
+  ngOnInit(): void {
+    this.gameResult = this.gameResultService.results;
+    this.gameWinner = this.gameResultService.gameWinner;
+    this.getResultString();
+  }
+
   //get the value from game result
   getResultString(){
-    if(this.gameResult === 'Player One'){
-      return 'You Win';
+    if(this.gameWinner.GameWinner == 'Player One'){
+      this.winner = true;
+      this.loser = false;
+      this.draw = false;
+      return this.winner;
     }
-    else if(this.gameResult === 'Player Two'){
-      return 'You Lose';
+    else if(this.gameWinner.GameWinner == 'Player Two'){
+      this.loser = true;
+      this.winner = false;
+      this.draw = false;
+      return this.loser;
     }
     else{
-      return 'Draw';
+      this.winner = false;
+      this.loser = false;
+      this.draw = true;
+      return this.draw;
     }
   }
   
 
   reset(){
     this.gameService.resetGame();
-    //send me back to the round selection
-    //console log the 
     this.router.navigate(['/rounds']);
   }
 

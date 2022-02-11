@@ -57,6 +57,7 @@ export class RoundSelectionComponent implements OnInit {
       this.gameService.commitRoundSelection('1');
       setRoundLimit = 1;
       this.gameService.startGame(setRoundLimit);
+     
       this.router.navigate(['/selection']);
       
     }

@@ -1,0 +1,3 @@
+<a *ngIf="auth.isLoggedOut$ | async" routerLink="/login">Login Now</a>
+
+<a *ngIf="auth.isLoggedIn$ | async" routerLink="/register" (click)="logout()">Logout Now</a> 

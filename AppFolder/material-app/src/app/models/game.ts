@@ -33,5 +33,8 @@ export interface GameResultResponseModel_Round {
 
 export interface GameResultResponseModel{
     rounds: GameResultResponseModel_Round[];
-    gameWinner: string;
+} 
+
+export interface GameWinnerResultResponseModel{
+    GameWinner: string;
 } 

@@ -74,7 +74,7 @@ export class SignupComponent implements OnInit {
       }
     });
 
-    //create a forkjoin tp postNew player and authService.register
+    
     this.playerService.postNewPlayer(username).subscribe({
       next: (data) => {
         if (data.status == 'Success'){

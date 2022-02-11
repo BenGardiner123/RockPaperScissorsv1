@@ -24,6 +24,7 @@ export interface LoginUserResponseModel {
     username: string;
     email: string;
     token?: string;
+    expiration: Date;
 }
 
 export interface RegisterUsernameResponseModel {

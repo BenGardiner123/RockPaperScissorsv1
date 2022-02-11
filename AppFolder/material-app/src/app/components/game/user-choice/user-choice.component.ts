@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { Game } from 'src/app/models/game';
 import { GameResultService } from 'src/app/services/game-result.service';
 import { GameService } from 'src/app/services/game.service';
 
@@ -17,14 +19,21 @@ export class UserChoiceComponent implements OnInit {
   public roundCounter: number;
   public roundLimit: number;
 
+  
+
+
+
   constructor(private gameService: GameService, private gameResultService: GameResultService, private router: Router) { }
 
   ngOnInit() {
-   this.gameService.gameData.subscribe(data => {
-      this.roundCounter = data.roundCounter;
-      this.roundLimit = data.roundLimit;
+    
+    //subscribe to the gameData$ observable
+    this.gameService.gameData$.subscribe(gameData => {
+      this.roundCounter = gameData.roundCounter;
+      this.roundLimit = gameData.roundLimit;
     });
-    console.log("roundCounter",this.roundCounter);  }
+
+    }
 
 
 
@@ -55,7 +64,7 @@ export class UserChoiceComponent implements OnInit {
 
   makeSelection() {
     console.log("make selection");
-    if (this.gameService.gameData == null) {
+    if (this.gameService.gameData$ == null) {
       alert("Please enter a username before making a selection");
       return;
     }
@@ -66,8 +75,9 @@ export class UserChoiceComponent implements OnInit {
           this.ngOnInit();
         }
         else {
-          //run the get game result function
-          this.gameResultService.getGameResult();
+          //navigate to the game result page
+          this.gameResultService.getGameRoundResult();
+          this.gameResultService.getGameWinner();
         }
        
       }
@@ -77,8 +87,9 @@ export class UserChoiceComponent implements OnInit {
           this.ngOnInit();
         }
         else {
-          //run the get game result function
-          this.gameResultService.getGameResult();
+          //navigate to the game result page
+          this.gameResultService.getGameRoundResult();
+          this.gameResultService.getGameWinner();
         }
         
       }
@@ -88,14 +99,23 @@ export class UserChoiceComponent implements OnInit {
           this.ngOnInit();
         }
         else {
-          //run the get game result function
-          this.gameResultService.getGameResult();
+          //navigate to the game result page
+          this.gameResultService.getGameRoundResult();
+          this.gameResultService.getGameWinner();
         }
        
 
       }
 
     }
+    //access the gameservice and increment the roundcounter - which should intheory update the 
+    
+    //call the roundCheck function to see if the round is over
+    if (this.gameService.roundCheck()) {
+      this.gameService.incrementCounter();
+    }
+    
+    console.log("roundCounter from inside the userchoice component after calling incrementCounter",this.roundCounter);
   }
 
   clearSelection(){

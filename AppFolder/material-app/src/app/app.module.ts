@@ -16,6 +16,7 @@ import { GameContainerComponent } from './components/game/game-container/game-co
 import { HttpClientModule } from '@angular/common/http';
 import { ErrorComponent } from './components/dialogs/error/error.component';
 import { SuccessComponent } from './components/dialogs/success/success.component';
+import { LoginButtonComponent } from './components/auth/login-button/login-button.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -31,7 +32,8 @@ export function tokenGetter() {
     UserChoiceComponent,
     LeaderboardComponent,
     GameContainerComponent,
-    SuccessComponent
+    SuccessComponent,
+    LoginButtonComponent,
   ],
   entryComponents: [ErrorComponent, SuccessComponent],
   imports: [

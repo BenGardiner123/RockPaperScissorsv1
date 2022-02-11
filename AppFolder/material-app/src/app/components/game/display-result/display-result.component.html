@@ -2,8 +2,14 @@
 
 
     <div>
-        <div class="outcomeDisplay">
-            <h1>You {{gameResult }} ! </h1>
+        <div *ngIf="winner" class="outcomeDisplay">
+            <h1>You Win! </h1>
+        </div>
+        <div *ngIf="loser" class="outcomeDisplay">
+            <h1>You Lose ! </h1>
+        </div>
+        <div *ngIf="draw" class="outcomeDisplay">
+            <h1>You Draw ! </h1>
         </div>
         <!-- TODO  need to reinstate this - the service is getting the right info just need to reimplement -->
         <!-- <app-rps-result-detail *ngFor="let gameResult of gameResultService.results" [results]="gameResult"></app-rps-result-detail> -->

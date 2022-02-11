@@ -1,8 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { GameResultResponseModel } from '../models/game';
+import { Game, GameResultRequestModel, GameResultResponseModel, GameWinnerResultResponseModel } from '../models/game';
 import { serverResponse } from '../models/serverResonse';
 import { GameService } from './game.service';
 
@@ -11,48 +13,51 @@ import { GameService } from './game.service';
 })
 export class GameResultService {
 
+  getCurrentGame: Game;
+
   constructor(private router: Router, private httpClient: HttpClient, private gameService: GameService) { 
-    
+    //map get game to the GameDAtaSource$
+    this.gameService.gameData$.subscribe(game => {
+      this.getCurrentGame = game;
+    }
+    );
   }
 
   private apiURL = environment.apiURL + "Game";
 
-  public gameOutcome: string | null;
-
   public results: GameResultResponseModel;
-  
+  public gameWinner: GameWinnerResultResponseModel;
 
 // change to post request
-  getGameResult(){
-  
-    let request = this.httpClient.post<GameResultResponseModel>(this.apiURL + "/GameResult",
+  getGameRoundResult(){
+    let data = JSON.parse(localStorage.getItem('auth_data'));
+    return this.httpClient.post<GameResultResponseModel>(this.apiURL + "/GameResult",
     {
-      username: this.gameService.username, 
-      dateTimeStarted: this.gameService.startDateTime,
-    });
-    request.subscribe((response) => {
-    //this stores the selection being pushed over from the compnent into the variable above
-    console.log("what is the response, is game winner there?" , response);
-    this.results = response;
-    //set the winner in the behavior subject
-    this.gameOutcome = this.results.gameWinner;
-    console.log(this.results);
-    this.router.navigateByUrl("/results");
-    }, (error) => {
-          if(error.status == 401){
-            alert("Sorry - you are not authorized to do that")
-          }
-          if(error.status == 405){
-            alert("The method exists but not supported by the target - potentially incorrct formating")
-          }
-          if(error.status == 404){
-            alert("The origin server did not find a current representation for the target resource or is not willing to disclose that one exists.")
-          }
-          if(error.status == 500){
-            alert("It is likely that some undetermined error occured.. internally. Have you tried switching it off and on again? ")
-          }
-
-  });
-
+      username: data.username,
+      dateTimeStarted: this.getCurrentGame.startDateTime,
+    }).subscribe({
+      next: (response) => {
+        this.results = response
+        console.log(this.results);
+      }
+    });  
  }
+
+  getGameWinner(){
+    let data = JSON.parse(localStorage.getItem('auth_data'));
+    return this.httpClient.post<string>(this.apiURL + "/GameWinner", { 
+      dateTimeStarted: this.getCurrentGame.startDateTime,
+      username: data.username
+    }
+    ).subscribe({
+      next: (response) => {
+        response = this.gameWinner.GameWinner;
+        console.log(response);
+        //navigate to the game result page
+        this.router.navigate(['/results']);
+      }
+  
+    });
+  }
+
 }

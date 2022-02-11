@@ -32,19 +32,20 @@ export class LoginComponent implements OnInit {
 
   onLoginSubmit() {
     //get the form values
-    const username = this.loginForm.get('username').value;
-    const password = this.loginForm.get('password').value;
+    const formValues = this.loginForm.value;
 
-   this.auth.login(username, password).subscribe({
+   this.auth.login(formValues.username, formValues.password).subscribe({
       next: (data) => {
-        //send the username to the auth service
-        this.gameService.loadUsername(username);
-        console.log(data);
+        // //send the username to the auth service
+        // this.gameService.loadUsername(formValues.username);
+        // console.log(data);
         if (data.token !== null) {
           this.router.navigate(['/rounds']);
         }
       }
    }
-  )}
+  ), (err) => {
+      alert(err.error.message);
+  }}
 
 }

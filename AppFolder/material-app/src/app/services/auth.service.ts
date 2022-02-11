@@ -2,20 +2,32 @@ import { Injectable } from '@angular/core';
 import { LoginUserRequestModel, LoginUserResponseModel, RegisterUserRequestModel, RegisterUserResponseModel, User } from '../models/user.model';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, shareReplay, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+
+const AUTH_DATA = 'auth_data';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private currentUserSubject: BehaviorSubject<User>;
-  public currentUser: Observable<User>;
+  private currentUserSubject =  new BehaviorSubject<User>(null);
+  currentUser$: Observable<User> = this.currentUserSubject.asObservable();
+  
+  isLoggedIn$: Observable<boolean>;
+  isLoggedOut$: Observable<boolean>;
+
 
   constructor(private http: HttpClient) {
-   
-    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
-    this.currentUser = this.currentUserSubject.asObservable();
+    this.isLoggedIn$ = this.currentUserSubject.pipe(map(user => !!user));
+    this.isLoggedOut$ = this.isLoggedIn$.pipe(map(loggedIn => !loggedIn));
+
+    const userAuthData = localStorage.getItem(AUTH_DATA);
+
+    if (userAuthData) {
+      this.currentUserSubject.next(JSON.parse(userAuthData));
+    }
+
   }
 
   public get currentUserValue(): User {
@@ -29,22 +41,23 @@ export class AuthService {
 
   login(username: string, password: string) {
     return this.http.post<LoginUserResponseModel>(`${environment.authURL}Authenticate/login`, { username, password })
-      .pipe(map(user => {
-        // store user details and jwt token in local storage to keep user logged in between page refreshes
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        this.currentUserSubject.next(user);
-        return user;
-      }));
+      .pipe(
+        tap(user => {
+            this.currentUserSubject.next(user);
+            localStorage.setItem(AUTH_DATA, JSON.stringify(user));
+        }),
+        shareReplay()
+    ); 
   }
 
   logout() {
-    // remove user from local storage to log user out
-    localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
+    localStorage.removeItem(AUTH_DATA);
   }
 
   getUsername() {
-    return this.currentUserValue.username;
+    let data = JSON.parse(localStorage.getItem('auth_data'));
+    return data.username; 
   }
 
 
