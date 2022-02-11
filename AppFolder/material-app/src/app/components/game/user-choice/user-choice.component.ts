@@ -18,22 +18,20 @@ export class UserChoiceComponent implements OnInit {
   public scissorsSelected: boolean;
   public roundCounter: number;
   public roundLimit: number;
-
-  
-
+  public gameCodeFound: boolean = false;
 
 
   constructor(private gameService: GameService, private gameResultService: GameResultService, private router: Router) { }
 
   ngOnInit() {
-    
+
     //subscribe to the gameData$ observable
     this.gameService.gameData$.subscribe(gameData => {
       this.roundCounter = gameData.roundCounter;
       this.roundLimit = gameData.roundLimit;
     });
-
-    }
+    
+  }
 
 
 
@@ -62,63 +60,43 @@ export class UserChoiceComponent implements OnInit {
     }
   }
 
+  //create a function that takes a selection from the front end and passes it to the game service
+
   makeSelection() {
-    console.log("make selection");
-    if (this.gameService.gameData$ == null) {
-      alert("Please enter a username before making a selection");
-      return;
-    }
-    else {
-      if (this.rockSelected) {
-        this.gameService.commitSelection("Rock")
-        if (this.gameService.roundCheck()) {
-          this.ngOnInit();
-        }
-        else {
-          //navigate to the game result page
-          this.gameResultService.getGameRoundResult();
-          this.gameResultService.getGameWinner();
-        }
-       
-      }
-      else if (this.paperSelected) {
-        this.gameService.commitSelection("Paper");
-        if (this.gameService.roundCheck()) {
-          this.ngOnInit();
-        }
-        else {
-          //navigate to the game result page
-          this.gameResultService.getGameRoundResult();
-          this.gameResultService.getGameWinner();
-        }
-        
-      }
-      else if (this.scissorsSelected) {
-        this.gameService.commitSelection("Scissors");
-        if (this.gameService.roundCheck()) {
-          this.ngOnInit();
-        }
-        else {
-          //navigate to the game result page
-          this.gameResultService.getGameRoundResult();
-          this.gameResultService.getGameWinner();
-        }
-       
-
-      }
-
-    }
-    //access the gameservice and increment the roundcounter - which should intheory update the 
-    
-    //call the roundCheck function to see if the round is over
-    if (this.gameService.roundCheck()) {
+    let selection: string;
+    if (this.rockSelected) {
+      selection = "Rock";
+      this.gameService.commitSelection(selection);
       this.gameService.incrementCounter();
+      if (this.roundCounter == this.roundLimit) {
+        this.gameResultService.getGameWinner();
+
+      }
+    }
+    else if (this.paperSelected) {
+      selection = "Paper";
+      this.gameService.commitSelection(selection);
+      this.gameService.incrementCounter();
+      if (this.roundCounter == this.roundLimit) {
+        this.gameResultService.getGameWinner();
+      }
+    }
+    else if (this.scissorsSelected) {
+      selection = "Scissors";
+      this.gameService.commitSelection(selection);
+      this.gameService.incrementCounter();
+      if (this.roundCounter == this.roundLimit) {
+        this.gameResultService.getGameWinner();
+      }
+
     }
     
-    console.log("roundCounter from inside the userchoice component after calling incrementCounter",this.roundCounter);
+   
+    
+    
   }
 
-  clearSelection(){
+  clearSelection() {
     this.rockSelected = false;
     this.paperSelected = false;
     this.scissorsSelected = false;

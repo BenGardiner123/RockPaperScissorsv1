@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { GameResultResponseModel, GameWinnerResultResponseModel } from 'src/app/models/game';
+import { GameResultResponseModel } from 'src/app/models/game';
 import { GameResultService } from 'src/app/services/game-result.service';
 import { GameService } from 'src/app/services/game.service';
 
@@ -12,7 +12,7 @@ import { GameService } from 'src/app/services/game.service';
 export class DisplayResultComponent implements OnInit {
 
   public gameResult: GameResultResponseModel;
-  public gameWinner: GameWinnerResultResponseModel;
+
 
   public winner: boolean;
   public loser: boolean;
@@ -24,19 +24,19 @@ export class DisplayResultComponent implements OnInit {
    
   ngOnInit(): void {
     this.gameResult = this.gameResultService.results;
-    this.gameWinner = this.gameResultService.gameWinner;
+    
     this.getResultString();
   }
 
   //get the value from game result
   getResultString(){
-    if(this.gameWinner.GameWinner == 'Player One'){
+    if(this.gameResult.winner == 'Player One'){
       this.winner = true;
       this.loser = false;
       this.draw = false;
       return this.winner;
     }
-    else if(this.gameWinner.GameWinner == 'Player Two'){
+    else if(this.gameResult.winner == 'Player Two'){
       this.loser = true;
       this.winner = false;
       this.draw = false;

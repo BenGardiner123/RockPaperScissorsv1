@@ -1,12 +1,10 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { environment } from 'src/environments/environment';
-import { Game, GameCheckRequestModel } from '../models/game';
-import { HttpOutcome } from '../models/httpOutcome';
-import { serverResponse } from '../models/serverResonse';
+import { Game, GameCheckResponseModel, GameCodeResponseModel } from '../models/game';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -20,6 +18,7 @@ export class GameService {
 
   private gameDataSource$ = new BehaviorSubject<Game>({
     username: "",
+    gameCode: "",
     startDateTime: null,
     roundLimit: 0,
     roundCounter: 0,
@@ -38,8 +37,6 @@ export class GameService {
   constructor(private router: Router, 
     private httpClient: HttpClient, 
     private authService: AuthService) {
-   
-   
   }
 
   incrementCounter() {
@@ -48,6 +45,8 @@ export class GameService {
       roundCounter: this.gameDataSource$.value.roundCounter + 1
     });
   }
+
+  
 
 
 
@@ -81,7 +80,7 @@ export class GameService {
     let usercheck = this.gameDataSource$.value.username;
     console.log("username Check", usercheck);
 
-    return this.httpClient.post(this.apiURL + "/StartGame", {
+    return this.httpClient.post<GameCheckResponseModel>(this.apiURL + "/StartGame", {
       //get the username from the authservice
       username : this.authService.currentUserValue.username,
       roundLimit: roundLimit,
@@ -102,8 +101,30 @@ export class GameService {
 
   }
 
+  //get game code from the server using get http with username and dateTimeStarted as params
+  getGameCode() {
+    let data = JSON.parse(localStorage.getItem('auth_data'));
+    let username = data.username;
+    let dateTimeStarted = this.gameDataSource$.value.startDateTime;
+    return this.httpClient.post<GameCodeResponseModel>(this.apiURL + "/GameCode", { username, dateTimeStarted
+    }).subscribe({
+      next: (response) => {
+        console.log("this is the response", response)
+        this.gameDataSource$.value.gameCode = response.gameCode;
+        //naviate to the selection page
+        this.router.navigate(['/selection']);
+      },
+      error: (error) => {
+        error.status;
+        console.log("this is the error", error);
+      }
+    });
+  }
 
-  commitSelection(option: "Rock" | "Paper" | "Scissors") {
+  
+
+
+  commitSelection(option: string) {
     
     let outgoingGame = {
       username: this.authService.getUsername(),
@@ -111,7 +132,6 @@ export class GameService {
       roundLimit: this.gameDataSource$.value.roundLimit,  
       DateTimeStarted: this.gameDataSource$.value.startDateTime,
       roundCounter: this.gameDataSource$.value.roundCounter,
-
     };
     console.log("outgoing object", outgoingGame);
     let request = this.httpClient.post<Game>(this.apiURL + "/postSelection", outgoingGame);
@@ -148,6 +168,7 @@ export class GameService {
     let data = JSON.parse(localStorage.getItem("auth_data"));
     this.gameDataSource$.next({ 
       username: data.username,
+      gameCode: "",
       startDateTime: null,
       roundLimit: 0,
       roundCounter: 0,

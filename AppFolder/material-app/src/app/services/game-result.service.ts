@@ -1,11 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { Game, GameResultRequestModel, GameResultResponseModel, GameWinnerResultResponseModel } from '../models/game';
-import { serverResponse } from '../models/serverResonse';
+import { Game, GameIdResultRequestModel, GameResultResponseModel} from '../models/game';
 import { GameService } from './game.service';
 
 @Injectable({
@@ -14,8 +12,10 @@ import { GameService } from './game.service';
 export class GameResultService {
 
   getCurrentGame: Game;
+  isGameWinnerCalculated: string;
 
-  constructor(private router: Router, private httpClient: HttpClient, private gameService: GameService) { 
+
+  constructor(private router: Router, private httpClient: HttpClient, private gameService: GameService) {
     //map get game to the GameDAtaSource$
     this.gameService.gameData$.subscribe(game => {
       this.getCurrentGame = game;
@@ -25,38 +25,60 @@ export class GameResultService {
 
   private apiURL = environment.apiURL + "Game";
 
+  
   public results: GameResultResponseModel;
-  public gameWinner: GameWinnerResultResponseModel;
 
-// change to post request
-  getGameRoundResult(){
+
+ //post method to calualte game result
+  postGameCalc() {
+    let data = this.getCurrentGame.gameCode;
+    return this.httpClient.post<string>(this.apiURL + "/GameId",
+      {
+        gameCode: data
+      }).subscribe({
+        next: (response) => {
+          this.isGameWinnerCalculated = response
+          console.log(this.results);
+        },
+        error: (error) => {
+          console.log("gameidhttp", error);
+        }
+      });
+  }
+
+  
+
+  getGameId() {
     let data = JSON.parse(localStorage.getItem('auth_data'));
-    return this.httpClient.post<GameResultResponseModel>(this.apiURL + "/GameResult",
-    {
-      username: data.username,
-      dateTimeStarted: this.getCurrentGame.startDateTime,
-    }).subscribe({
-      next: (response) => {
-        this.results = response
-        console.log(this.results);
-      }
-    });  
- }
+    return this.httpClient.post<GameResultResponseModel>(this.apiURL + "/GameId",
+      {
+        username: data.username,
+        dateTimeStarted: this.getCurrentGame.startDateTime,
+      }).subscribe({
+        next: (response) => {
+          this.results = response
+          console.log(this.results);
+        },
+        error: (error) => {
+          console.log("gameidhttp", error);
+        }
+      });
+  }
 
   getGameWinner(){
     let data = JSON.parse(localStorage.getItem('auth_data'));
-    return this.httpClient.post<string>(this.apiURL + "/GameWinner", { 
-      dateTimeStarted: this.getCurrentGame.startDateTime,
-      username: data.username
+    let gameCode = this.getCurrentGame.gameCode;
+    return this.httpClient.post<GameResultResponseModel>(this.apiURL + "/GameWinner", { 
+      gameCode
     }
     ).subscribe({
       next: (response) => {
-        response = this.gameWinner.GameWinner;
+        response = this.results;
         console.log(response);
         //navigate to the game result page
         this.router.navigate(['/results']);
       }
-  
+
     });
   }
 
