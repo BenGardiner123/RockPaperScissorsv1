@@ -14,6 +14,9 @@ export class GameService {
 
   private apiURL = environment.apiURL + "Game";
 
+  public userGameCode: string = "";
+
+
   //create a behaviour subject to track the game state
 
   private gameDataSource$ = new BehaviorSubject<Game>({
@@ -21,7 +24,7 @@ export class GameService {
     gameCode: "",
     startDateTime: null,
     roundLimit: 0,
-    roundCounter: 0,
+    roundCounter: 1,
     aiSelection: "",
     outcome: "",
     selection: "",
@@ -37,6 +40,7 @@ export class GameService {
   constructor(private router: Router, 
     private httpClient: HttpClient, 
     private authService: AuthService) {
+    console.log("game service constructor", this.gameDataSource$.value);
   }
 
   incrementCounter() {
@@ -44,9 +48,16 @@ export class GameService {
       ...this.gameDataSource$.value,
       roundCounter: this.gameDataSource$.value.roundCounter + 1
     });
+    console.log("round counter", this.gameDataSource$.value.roundCounter);
   }
 
-  
+  returnGameCode() {
+    this.gameDataSource$.next({
+      ...this.gameDataSource$.value,
+      gameCode: this.gameDataSource$.value.gameCode
+    });
+    console.log("game code", this.gameDataSource$.value.gameCode);
+  }
 
 
 
@@ -69,16 +80,16 @@ export class GameService {
     var specificNewGameTime = new Date();
     this.gameDataSource$.value.startDateTime = specificNewGameTime;
     this.gameDataSource$.value.roundLimit = parseInt(roundNum);
-    this.gameDataSource$.value.roundCounter++;
+    //this.gameDataSource$.value.roundCounter++;
 
   }
 
-  startGame(roundLimit: number) {
+  startGame(roundLimit: number){
     //create a new date object to store the current time
     let NewGameTime = new Date().toISOString();
     console.log("start game");
-    let usercheck = this.gameDataSource$.value.username;
-    console.log("username Check", usercheck);
+    this.gameDataSource$.value.username = this.authService.getUsername();
+    console.log("username Check", this.gameDataSource$.value);
 
     return this.httpClient.post<GameCheckResponseModel>(this.apiURL + "/StartGame", {
       //get the username from the authservice
@@ -87,10 +98,15 @@ export class GameService {
       DateTimeStarted: NewGameTime,
       roundCounter: this.gameDataSource$.value.roundCounter
     }).subscribe({
-      
       next: (response) => {
         console.log("this is the response", response)
-        //naviate to the selection page
+        console.log("the bhavior subject value", this.gameDataSource$.value);
+        //update the behavior subject gamecode witht eh new game data
+        this.userGameCode = response.gameCode;
+        console.log("the bhavior subject value after gamecode update", this.gameDataSource$.value);
+        this.gameDataSource$.value.gameCode = response.gameCode;
+        console.log("the bhavior subject value after gamecode assignment", this.gameDataSource$.value);
+      
         this.router.navigate(['/selection']);
       },
       error: (error) => {
@@ -102,30 +118,23 @@ export class GameService {
   }
 
   //get game code from the server using get http with username and dateTimeStarted as params
-  getGameCode() {
-    let data = JSON.parse(localStorage.getItem('auth_data'));
-    let username = data.username;
-    let dateTimeStarted = this.gameDataSource$.value.startDateTime;
-    return this.httpClient.post<GameCodeResponseModel>(this.apiURL + "/GameCode", { username, dateTimeStarted
-    }).subscribe({
-      next: (response) => {
-        console.log("this is the response", response)
-        this.gameDataSource$.value.gameCode = response.gameCode;
-        //naviate to the selection page
-        this.router.navigate(['/selection']);
-      },
-      error: (error) => {
-        error.status;
-        console.log("this is the error", error);
-      }
+  // getGameCode() {
+  //   let data = JSON.parse(localStorage.getItem('auth_data'));
+  //   let username = data.username;
+  //   let dateTimeStarted = this.gameDataSource$.value.startDateTime;
+  //   return this.httpClient.post<GameCodeResponseModel>(this.apiURL + "/GameCode", { username, dateTimeStarted
+  //   });
+  // }
+
+  updateSubjectData(theChangedProp: string) {
+    this.gameDataSource$.next({ 
+      ...this.gameDataSource$.value, gameCode: theChangedProp 
     });
   }
 
-  
-
 
   commitSelection(option: string) {
-    
+    this.updateSubjectData(this.userGameCode);
     let outgoingGame = {
       username: this.authService.getUsername(),
       playerChoice: option,
@@ -140,7 +149,7 @@ export class GameService {
       console.log("this is whats coming back", response);
       this.gameDataSource$.value.aiSelection = response.aiSelection;
       this.gameDataSource$.value.outcome = response.outcome;
-      
+      this.incrementCounter();
     }, (error) => {
       if (error.status == 401) {
         alert("Sorry - you are not authorized to do that")

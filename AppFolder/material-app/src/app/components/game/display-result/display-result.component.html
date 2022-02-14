@@ -1,7 +1,7 @@
 <div class="container">
 
 
-    <div>
+    <div *ngIf="!isLoading">
         <div *ngIf="winner" class="outcomeDisplay">
             <h1>You Win! </h1>
         </div>
@@ -11,9 +11,10 @@
         <div *ngIf="draw" class="outcomeDisplay">
             <h1>You Draw ! </h1>
         </div>
-        <!-- TODO  need to reinstate this - the service is getting the right info just need to reimplement -->
-        <!-- <app-rps-result-detail *ngFor="let gameResult of gameResultService.results" [results]="gameResult"></app-rps-result-detail> -->
+        
+        <!-- <app-result-detail *ngFor="let gameResult of gameResultService.g" [results]="gameResult"></app-result-detail> -->
     </div>
+    
 
     <div class="buttonBox">
 

@@ -25,6 +25,7 @@ export class UserChoiceComponent implements OnInit {
 
   ngOnInit() {
 
+      
     //subscribe to the gameData$ observable
     this.gameService.gameData$.subscribe(gameData => {
       this.roundCounter = gameData.roundCounter;
@@ -64,31 +65,29 @@ export class UserChoiceComponent implements OnInit {
 
   makeSelection() {
     let selection: string;
+    
+
     if (this.rockSelected) {
       selection = "Rock";
       this.gameService.commitSelection(selection);
-      this.gameService.incrementCounter();
-      if (this.roundCounter == this.roundLimit) {
-        this.gameResultService.getGameWinner();
-
-      }
+      
     }
     else if (this.paperSelected) {
       selection = "Paper";
       this.gameService.commitSelection(selection);
-      this.gameService.incrementCounter();
-      if (this.roundCounter == this.roundLimit) {
-        this.gameResultService.getGameWinner();
-      }
+    
     }
     else if (this.scissorsSelected) {
       selection = "Scissors";
       this.gameService.commitSelection(selection);
-      this.gameService.incrementCounter();
-      if (this.roundCounter == this.roundLimit) {
-        this.gameResultService.getGameWinner();
-      }
 
+    }
+    //if the roundcounter is less than the roundlimit, then increment the roundcounter
+    if (this.roundCounter == this.roundLimit) {
+      console.log("round limit if triggered");
+      //this.gameResultService.getGameWinner();
+      //navigate to the game result page
+      this.router.navigate(['/results']);
     }
     
    

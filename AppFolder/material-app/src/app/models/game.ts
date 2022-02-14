@@ -21,39 +21,41 @@ export interface GameCheckRequestModel {
 }
 
 export interface GameCheckResponseModel {
-    username: string;
-    roundLimit: number;
-    currentRound: number;
-    DateTimeStarted: Date;
+    gameCode: string;
 }
 
 export interface GameCodeRequestModel {
     username: string;
     DateTimeStarted: Date;
-}  
+}
 
 export interface GameCodeResponseModel {
     gameCode: string;
-}  
+}
 
 export interface GameResultRequestModel {
     username: string;
     DateTimeStarted: Date;
-}   
+}
 
 export interface GameResultResponseModel_Round {
-    roundNumber: number;
+    RoundNumber: number;
     PlayerOneChoice: string;
     PlayerTwoChoice: string;
     Winner: string;
-}   
+}
 
-export interface GameResultResponseModel{
+export interface GameResultResponseModel {
     rounds: GameResultResponseModel_Round[];
-    winner: string;
-} 
+}
+
 
 export interface GameIdResultRequestModel {
     username: string;
     dateTimeStarted: Date;
-}   
+}
+
+//create a GamewinnerrepsosneModel
+export interface GameWinnerResponseModel {
+    gameWinner: string;
+}

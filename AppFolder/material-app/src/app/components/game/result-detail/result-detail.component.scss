@@ -1,0 +1,46 @@
+
+.splitter{
+    display: flex;
+    border: 1px black solid; 
+    margin-bottom: 20px; 
+}
+
+.vs{
+    border: 1px black solid; 
+    padding-left: 132px;
+    padding-right: 132px;
+}
+
+.vs h1{
+    padding-top: 20px;
+}
+    
+
+.choice{
+    border: 1px black solid; 
+    height: 100px;
+    width: 100px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.choice.userSelection{
+    border: 1px black solid;
+    margin: 10px;
+    height: 100px;
+    width: 100px;
+    
+}
+
+img{
+    background-repeat: no-repeat;
+    max-width:100%;
+    height:auto;
+}
+
+.choice.AiSelection{
+    border: 1px black solid; 
+    margin: 10px;
+    height: 100px;
+    width: 100px;
+}
