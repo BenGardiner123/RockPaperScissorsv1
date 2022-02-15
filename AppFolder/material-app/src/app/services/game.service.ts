@@ -180,7 +180,7 @@ export class GameService {
       gameCode: "",
       startDateTime: null,
       roundLimit: 0,
-      roundCounter: 0,
+      roundCounter: 1,
       aiSelection: "",
       outcome: "", 
       selection: "",
