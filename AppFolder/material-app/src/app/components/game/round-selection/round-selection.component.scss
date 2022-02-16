@@ -1,19 +1,48 @@
 .container{
    display: flex;
+   justify-content: center;
+   align-items: center;
+   width: 100%;
+   //max-width: 120rem;
+   margin: 8rem auto;
+
 }
 
 .roundChoiceContainer{
    flex-direction: column;
+   justify-content: center;
+   align-items: center;
+   width: 60%;
+   text-align: center;
 }
+
+.buttonContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem auto;
+    width: 100%;
+    
+}
+
+.shootButton{ 
+    margin-right: 1rem !important;
+    font-size: 3.7rem !important;
+    line-height: 5rem !important;
+  }
+
 
 .roundSelectors{
     display: flex;
     flex-direction: row;
-    
+    justify-content: space-evenly;
 }
 .choice.one{
     color: black;
     cursor:grab;
+    font-size: 2.5rem;
+    padding: 2%;
+    border: solid 2px transparent;
 }
 
 .choice.one:hover{
@@ -30,8 +59,12 @@
 }
 
 .choice.three{
+    padding: 2%;
     color: black;
     cursor:grab;
+    font-size: 2.5rem;
+    padding-right: 2%;
+    border: solid 2px transparent;
 }
 
 .choice.three:hover{
@@ -45,12 +78,14 @@
     background-color: #888f99;
     border: white 2px solid;
     border-radius: 2px;
-    
 }
 
 .choice.five{
     color: black;
     cursor:grab;
+    font-size: 2.5rem;
+    padding: 2%;
+    border: solid 2px transparent;
 }
 
 .choice.five:hover{

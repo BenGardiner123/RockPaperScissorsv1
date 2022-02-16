@@ -14,10 +14,10 @@
             <div [ngClass]="!scissorsSelected ? 'choice scissors' : 'choice scissors selected'"(click)="chooseThis('Scissors')">
             </div>
         </div>
-      
-        <div>
+
+        <div class="buttonContainer-choice">
             <button mat-raised-button color="primary" 
-            class="shootButton" 
+            class="shootButtonChoice" 
             (click)="makeSelection()" 
             (click)="clearSelection()"
             [disabled]="!isSelected" 
@@ -26,8 +26,11 @@
             aria-label="Button that displays a tooltip that hides when scrolled out of the container"
             >Shoot!</button>
         </div>
+       
 
     </div>
+
+    
     
 
 </div>
