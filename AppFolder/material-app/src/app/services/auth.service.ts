@@ -34,6 +34,12 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
+  //get user token from local storage
+  getToken() {
+    return this.currentUserValue ? this.currentUserValue.token : null;
+  }
+  
+
   register(username: string, email: string, password: string) {
     return this.http.post<RegisterUserResponseModel>(`${environment.authURL}Authenticate/register`, { username, email, password }) ;
   }

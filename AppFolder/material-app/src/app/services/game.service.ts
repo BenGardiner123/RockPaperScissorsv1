@@ -142,14 +142,17 @@ export class GameService {
       DateTimeStarted: this.gameDataSource$.value.startDateTime,
       roundCounter: this.gameDataSource$.value.roundCounter,
     };
+    
     console.log("outgoing object", outgoingGame);
-    let request = this.httpClient.post<Game>(this.apiURL + "/postSelection", outgoingGame);
+    let request = this.httpClient.post<Game>(this.apiURL + "/postSelection", outgoingGame,);
     request.subscribe((response) => {
       //this stores the selection being pushed over from the compnent into the variable above
       console.log("this is whats coming back", response);
       this.gameDataSource$.value.aiSelection = response.aiSelection;
       this.gameDataSource$.value.outcome = response.outcome;
+      if(this.gameDataSource$.value.roundCounter < this.gameDataSource$.value.roundLimit){
       this.incrementCounter();
+      }
     }, (error) => {
       if (error.status == 401) {
         alert("Sorry - you are not authorized to do that")

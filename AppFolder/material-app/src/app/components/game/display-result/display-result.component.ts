@@ -43,6 +43,7 @@ export class DisplayResultComponent implements OnInit {
 
   //create a method to call postGameCalc and getGameWinner
  getGameWinner() {
+  
   this.gameResultService.postGameCalc().subscribe({
     next: (gameWinnerData) => {
       this.gameWinner = gameWinnerData;

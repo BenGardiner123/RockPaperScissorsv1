@@ -13,11 +13,13 @@ import { DisplayResultComponent } from './components/game/display-result/display
 import { UserChoiceComponent } from './components/game/user-choice/user-choice.component';
 import { LeaderboardComponent } from './components/leaderboard/leaderboard/leaderboard.component';
 import { GameContainerComponent } from './components/game/game-container/game-container.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorComponent } from './components/dialogs/error/error.component';
 import { SuccessComponent } from './components/dialogs/success/success.component';
 import { LoginButtonComponent } from './components/auth/login-button/login-button.component';
 import { ResultDetailComponent } from './components/game/result-detail/result-detail.component';
+import { TokenInterceptor } from './interceptors/token.interceptor';
+
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -53,7 +55,10 @@ export function tokenGetter() {
     })
   ],
  
-  providers: [],
+  providers: [
+       { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
+      
+   ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

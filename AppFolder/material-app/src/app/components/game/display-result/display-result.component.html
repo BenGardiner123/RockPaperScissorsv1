@@ -1,5 +1,7 @@
 <div class="container">
 
+    <!-- creata a mat-spinner -->
+    <mat-spinner *ngIf="isLoading" color="accent" mode="indeterminate" ></mat-spinner>
 
     <div *ngIf="!isLoading">
         <div *ngIf="winner" class="outcomeDisplay">

@@ -90,7 +90,7 @@ export class UserChoiceComponent implements OnInit {
       this.router.navigate(['/results']);
     }
     
-   
+   this.clearSelection();
     
     
   }
