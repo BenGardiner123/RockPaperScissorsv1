@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
       }
    }
   ), (err) => {
-      alert(err.error.message);
+     throw err;
   }}
 
 }

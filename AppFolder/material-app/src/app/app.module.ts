@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { JwtModule } from '@auth0/angular-jwt';
 
@@ -19,6 +19,11 @@ import { SuccessComponent } from './components/dialogs/success/success.component
 import { LoginButtonComponent } from './components/auth/login-button/login-button.component';
 import { ResultDetailComponent } from './components/game/result-detail/result-detail.component';
 import { TokenInterceptor } from './interceptors/token.interceptor';
+import { ErrorDialogComponent } from './dialogs/error/error-dialog/error-dialog.component';
+import { LoadingDialogComponent } from './dialogs/loading/loading-dialog/loading-dialog.component';
+import { HttpLoadingInterceptor } from './interceptors/http-loading.interceptor';
+import { GlobalErrorHandler } from './errors/global-error-handling/global-error-handling.component';
+
 
 
 export function tokenGetter() {
@@ -38,8 +43,11 @@ export function tokenGetter() {
     SuccessComponent,
     LoginButtonComponent,
     ResultDetailComponent,
+    ErrorDialogComponent,
+    LoadingDialogComponent,
+    
   ],
-  entryComponents: [ErrorComponent, SuccessComponent],
+  entryComponents: [ErrorComponent, SuccessComponent, ErrorDialogComponent, LoadingDialogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -56,7 +64,9 @@ export function tokenGetter() {
   ],
  
   providers: [
-       { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
+       { provide: ErrorHandler, useClass: GlobalErrorHandler  },    
+       { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+       { provide: HTTP_INTERCEPTORS, useClass: HttpLoadingInterceptor, multi: true },
       
    ],
   bootstrap: [AppComponent]

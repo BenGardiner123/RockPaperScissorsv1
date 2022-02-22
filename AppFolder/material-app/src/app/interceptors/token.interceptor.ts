@@ -8,6 +8,7 @@ import {
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { environment } from 'src/environments/environment';
+import { ContentObserver } from '@angular/cdk/observers';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -36,12 +37,16 @@ export class TokenInterceptor implements HttpInterceptor {
        const isLoggedIn = currentUser && currentUser.token;
        const isApiUrl = request.url.startsWith(environment.apiURL);
        const isIdentityUrl = request.url.startsWith(environment.authURL);
+
+
        if (isLoggedIn && isApiUrl || isLoggedIn && isIdentityUrl) {
+        
            request = request.clone({
                setHeaders: {
                    Authorization: `Bearer ${currentUser.token}`
                }
            });
+           console.log('requestJWT', request);
        }
  
        return next.handle(request);

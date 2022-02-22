@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { Player } from '../models/player';
 import { RegisterUsernameResponseModel } from '../models/user.model';
 
 @Injectable({
@@ -8,13 +9,13 @@ import { RegisterUsernameResponseModel } from '../models/user.model';
 })
 export class PlayerService {
 
-  listOfPlayers: string[] = [];
+  listOfPlayers: Player[];
 
   constructor(private http: HttpClient) { }
 
   checkUserNameNotTaken() {
-    return this.http.get(`${environment.apiURL}Player`).subscribe(data => {
-      this.listOfPlayers = data as string[];
+    return this.http.get<Player[]>(`${environment.apiURL}Player`).subscribe(data => {
+      this.listOfPlayers = data;
     });
   }
 
@@ -25,6 +26,7 @@ export class PlayerService {
 
 
   postNewPlayer(username: string) {
+ 
     return this.http.post<RegisterUsernameResponseModel>(`${environment.apiURL}Player`, {username} );
   }
 

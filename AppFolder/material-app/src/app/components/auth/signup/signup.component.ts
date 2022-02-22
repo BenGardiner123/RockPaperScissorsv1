@@ -16,8 +16,6 @@ import { SuccessComponent } from '../../dialogs/success/success.component';
 export class SignupComponent implements OnInit {
 
 
-  listOfUsers: string[] = [];
-
   constructor(
     private authService: AuthService,
     private playerService: PlayerService,
@@ -29,7 +27,8 @@ export class SignupComponent implements OnInit {
 
 
   ngOnInit() {
-    this.playerService.checkUserNameNotTaken();
+   this.getLisOfCurrentUsers();
+  
   }
 
   signUpForm = new FormGroup({
@@ -41,35 +40,42 @@ export class SignupComponent implements OnInit {
 
   });
 
+  getLisOfCurrentUsers() {
+    this.playerService.checkUserNameNotTaken();
+  }
+
+
   openErrorDialog() {
     this.dialog.open(ErrorComponent);
   }
 
   openSuccessDialog() {
-    this.dialog.open(SuccessComponent);
+    this.dialog.open(SuccessComponent, {  data: {message: 'You have successfully signed up'}} );
   }
 
 
   onSignupSubmit() {
+    //console.log the list of users
+    console.log(this.playerService.listOfPlayers);
 
     //get the form values
     const username = this.signUpForm.get('username').value;
     const email = this.signUpForm.get('email').value;
     const password = this.signUpForm.get('password').value;
-
+    console.log("users", this.playerService.listOfPlayers);
     let usernameTaken = false;
-
+    
     if (this.playerService.listOfPlayers.includes(username)) {
-      this.openErrorDialog();
-      //clear the form
+      usernameTaken = true;
       this.signUpForm.reset();
-      return;
+      throw Error( 'Username already taken');
     }
+
+
     this.authService.register(username, email, password).subscribe({
       next: (data) => {
         if(data.status != 'Success'){
-          this.openErrorDialog();
-          return;
+          throw Error('Username already registered');
         }
       }
     });
@@ -79,10 +85,12 @@ export class SignupComponent implements OnInit {
       next: (data) => {
         if (data.status == 'Success'){
           this.openSuccessDialog();
+           //navigate to the login component
+          this.router.navigate(['/login']);
         }
-
-        //navigate to the login component
-        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+        throw Error(err);
       }
     });
 

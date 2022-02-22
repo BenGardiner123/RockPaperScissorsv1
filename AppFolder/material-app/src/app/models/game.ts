@@ -2,6 +2,7 @@ import { Round } from "./round";
 
 //create game model for the behavior subject
 export interface Game {
+    ///state of the game - enum <start, >
     username: string;
     gameCode: string;
     startDateTime: Date | null;
@@ -59,3 +60,8 @@ export interface GameIdResultRequestModel {
 export interface GameWinnerResponseModel {
     gameWinner: string;
 }
+
+const test: GameWinnerResponseModel = {
+    gameWinner: "sombody"
+};
+

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { LoginUserRequestModel, LoginUserResponseModel, RegisterUserRequestModel, RegisterUserResponseModel, User } from '../models/user.model';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, shareReplay, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -66,5 +66,6 @@ export class AuthService {
     return data.username; 
   }
 
+ 
 
 }
