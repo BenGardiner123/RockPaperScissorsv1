@@ -19,6 +19,7 @@ import { SuccessComponent } from './components/dialogs/success/success.component
 import { LoginButtonComponent } from './components/auth/login-button/login-button.component';
 import { ResultDetailComponent } from './components/game/result-detail/result-detail.component';
 import { TokenInterceptor } from './interceptors/token.interceptor';
+import { ErrorInterceptor } from './interceptors/error.interceptor';
 
 
 export function tokenGetter() {
@@ -56,8 +57,8 @@ export function tokenGetter() {
   ],
  
   providers: [
-       { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
-      
+       { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+      { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
    ],
   bootstrap: [AppComponent]
 })

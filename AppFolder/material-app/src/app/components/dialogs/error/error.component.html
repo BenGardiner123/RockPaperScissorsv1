@@ -1,3 +1,12 @@
-<p>
-    Username is taken.
-</p>
+<h2 mat-dialog-title style="text-align: center;">
+    There was an error processing your request.
+</h2>
+<div mat-dialog-content style="text-align: center;">
+    <div class="alert-container">
+        <img class="alert-icon" src="../../../../assets/Exclamation1.png">
+    </div>
+    <p style="color: crimson;">
+        {{data.message}}
+    </p>
+</div>
+

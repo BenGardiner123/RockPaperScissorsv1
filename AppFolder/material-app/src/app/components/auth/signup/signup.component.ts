@@ -18,6 +18,10 @@ export class SignupComponent implements OnInit {
 
   listOfUsers: string[] = [];
 
+  error: string;
+
+  authenticationFailed = false;
+
   constructor(
     private authService: AuthService,
     private playerService: PlayerService,
@@ -41,14 +45,6 @@ export class SignupComponent implements OnInit {
 
   });
 
-  openErrorDialog() {
-    this.dialog.open(ErrorComponent);
-  }
-
-  openSuccessDialog() {
-    this.dialog.open(SuccessComponent);
-  }
-
 
   onSignupSubmit() {
 
@@ -57,48 +53,51 @@ export class SignupComponent implements OnInit {
     const email = this.signUpForm.get('email').value;
     const password = this.signUpForm.get('password').value;
 
-    let usernameTaken = false;
+   
 
     if (this.playerService.listOfPlayers.includes(username)) {
-      this.openErrorDialog();
+      this.error = 'Username already taken';
+      this.dialog.open(ErrorComponent, { width: '20%', data: { message: this.error } });
       //clear the form
       this.signUpForm.reset();
       return;
     }
+
     this.authService.register(username, email, password).subscribe({
       next: (data) => {
-        if(data.status != 'Success'){
-          this.openErrorDialog();
-          return;
+        console.log("regiater response data", data);
+        if(data.status == 'Error'){
+          this.authenticationFailed = true;
+          //this.dialog.open(ErrorComponent, { width: '20%', data: { message: this.error } });
+           //clear the form
+          this.signUpForm.reset();
+          ;
         }
-      }
-    });
-
-    
-    this.playerService.postNewPlayer(username).subscribe({
-      next: (data) => {
-        if (data.status == 'Success'){
-          this.openSuccessDialog();
-        }
-
-        //navigate to the login component
-        this.router.navigate(['/login']);
-      }
-    });
-
-  }
-  
-
-      
         
+      }
+    });
+
+    if(this.authenticationFailed){
       
+      //clear the form
+      this.signUpForm.reset();
+      
+    } 
+    if(this.authenticationFailed == false){
+      console.log('success', this.authenticationFailed);
+      this.playerService.postNewPlayer(username).subscribe({
+        next: (data) => {
+          console.log("regiater response data", data);
+          if (data.status == 'Success'){
+            this.dialog.open(SuccessComponent, { width: '20%', data: { message: data.message } });
+          }
   
-
-
-     
-
+          //navigate to the login component
+          this.router.navigate(['/login']);
+        }
+      });
+    }
     
-
-   
-
-  } 
+    
+  }
+}
